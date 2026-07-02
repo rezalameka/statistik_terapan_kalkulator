@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Uji Validitas & Reliabilitas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2em;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .data-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+        }
+
+        .data-input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 10px rgba(52,152,219,0.2);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 3px;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .result-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #3498db;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .result-value {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        .result-value.significant {
+            color: #27ae60;
+        }
+
+        .result-value.not-significant {
+            color: #e74c3c;
+        }
+
+        .interpretation {
+            margin-top: 10px;
+            padding: 10px;
+            background: #fff3cd;
+            border-radius: 5px;
+            font-size: 13px;
+            color: #856404;
+        }
+
+        .interpretation.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .interpretation.danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 13px;
+        }
+
+        .data-table th {
+            background: #34495e;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .data-table td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 8px 15px;
+            border: 2px solid #3498db;
+            background: white;
+            color: #3498db;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 13px;
+        }
+
+        .tab-btn.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .correlation-matrix {
+            overflow-x: auto;
+        }
+
+        .correlation-matrix table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .correlation-matrix th {
+            background: #34495e;
+            color: white;
+            padding: 8px;
+        }
+
+        .correlation-matrix td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .valid {
+            background: #d4edda;
+            font-weight: bold;
+        }
+
+        .invalid {
+            background: #f8d7da;
+        }
+
+        .r-table {
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Kalkulator Uji Validitas & Reliabilitas</h1>
+            <p style="color: #666; margin-top: 5px;">Statistik Deskriptif • Uji Validitas • Uji Reliabilitas</p>
+        </div>
+
+        <div class="main-grid">
+            <!-- INPUT DATA CARD -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📝</span> Input Data Penelitian
+                </div>
+
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab('manual')">Input Manual</button>
+                    <button class="tab-btn" onclick="switchTab('sample')">Data Contoh</button>
+                    <button class="tab-btn" onclick="switchTab('table')">Tabel Data</button>
+                </div>
+
+                <div id="manualInput">
+                    <div class="input-group">
+                        <label>Jumlah Responden (N):</label>
+                        <input type="number" class="data-input" id="numRespondents" value="5" min="2" onchange="updateTable()">
+                    </div>
+                    <div class="input-group">
+                        <label>Jumlah Item Pertanyaan:</label>
+                        <input type="number" class="data-input" id="numItems" value="5" min="2" onchange="updateTable()">
+                    </div>
+                    <div class="input-group">
+                        <label>Data (pisahkan dengan spasi, koma, atau enter):</label>
+                        <textarea class="data-input" id="dataInput" rows="5" placeholder="Contoh: 5 4 3 5 4, 4 3 5 4 3, ..."></textarea>
+                    </div>
+                    <button class="btn btn-primary" onclick="processManualData()">✅ Proses Data</button>
+                </div>
+
+                <div id="sampleInput" style="display: none;">
+                    <p style="font-size: 13px; color: #666; margin-bottom: 10px;">
+                        Pilih data contoh untuk simulasi:
+                    </p>
+                    <button class="btn btn-success" onclick="loadSampleValid()">📥 Data Valid</button>
+                    <button class="btn btn-warning" onclick="loadSamplePartial()">📥 Data Partial Valid</button>
+                    <button class="btn btn-danger" onclick="loadSampleInvalid()">📥 Data Tidak Valid</button>
+                </div>
+
+                <div id="tableInput" style="display: none;">
+                    <div style="overflow-x: auto;">
+                        <table class="data-table" id="inputTable">
+                            <thead id="tableHeader"></thead>
+                            <tbody id="tableBody"></tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-primary" onclick="processTableData()" style="margin-top: 10px;">✅ Proses Tabel</button>
+                </div>
+            </div>
+
+            <!-- RESULTS CARD -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📈</span> Hasil Analisis
+                </div>
+
+                <!-- STATISTIK DESKRIPTIF -->
+                <div class="result-box" id="descriptiveResults">
+                    <h4 style="color: #2c3e50; margin-bottom: 10px;">📊 Statistik Deskriptif</h4>
+                    <div id="descriptiveContent">
+                        <p style="color: #999; font-style: italic;">Masukkan data untuk melihat hasil</p>
+                    </div>
+                </div>
+
+                <!-- UJI VALIDITAS -->
+                <div class="result-box" id="validityResults" style="border-left-color: #27ae60;">
+                    <h4 style="color: #2c3e50; margin-bottom: 10px;">✅ Uji Validitas (Pearson Correlation)</h4>
+                    <div id="validityContent">
+                        <p style="color: #999; font-style: italic;">Masukkan data untuk melihat hasil</p>
+                    </div>
+                </div>
+
+                <!-- UJI RELIABILITAS -->
+                <div class="result-box" id="reliabilityResults" style="border-left-color: #f39c12;">
+                    <h4 style="color: #2c3e50; margin-bottom: 10px;">🔄 Uji Reliabilitas (Cronbach's Alpha)</h4>
+                    <div id="reliabilityContent">
+                        <p style="color: #999; font-style: italic;">Masukkan data untuk melihat hasil</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentData = [];
+        let numItems = 5;
+        let numRespondents = 5;
+
+        // ==================== FUNGSI STATISTIK ====================
+
+        function calculateMean(arr) {
+            if (arr.length === 0) return 0;
+            return arr.reduce((a, b) => a + b, 0) / arr.length;
+        }
+
+        function calculateMedian(arr) {
+            if (arr.length === 0) return 0;
+            const sorted = [...arr].sort((a, b) => a - b);
+            const mid = Math.floor(sorted.length / 2);
+            return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+        }
+
+        function calculateMode(arr) {
+            if (arr.length === 0) return [];
+            const frequency = {};
+            let maxFreq = 0;
+            
+            arr.forEach(value => {
+                frequency[value] = (frequency[value] || 0) + 1;
+                maxFreq = Math.max(maxFreq, frequency[value]);
+            });
+            
+            const modes = Object.keys(frequency)
+                .filter(key => frequency[key] === maxFreq)
+                .map(Number);
+            
+            if (modes.length === arr.length) return []; // Tidak ada modus
+            
+            return modes;
+        }
+
+        function calculateStdDev(arr) {
+            if (arr.length === 0) return 0;
+            const mean = calculateMean(arr);
+            const variance = arr.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / arr.length;
+            return Math.sqrt(variance);
+        }
+
+        function calculateVariance(arr) {
+            if (arr.length === 0) return 0;
+            const mean = calculateMean(arr);
+            return arr.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / arr.length;
+        }
+
+        function calculateSum(arr) {
+            return arr.reduce((a, b) => a + b, 0);
+        }
+
+        function calculateMin(arr) {
+            return Math.min(...arr);
+        }
+
+        function calculateMax(arr) {
+            return Math.max(...arr);
+        }
+
+        function calculateRange(arr) {
+            return calculateMax(arr) - calculateMin(arr);
+        }
+
+        // ==================== FUNGSI VALIDITAS ====================
+
+        // Korelasi Pearson
+        function pearsonCorrelation(x, y) {
+            if (x.length !== y.length || x.length === 0) return 0;
+            
+            const n = x.length;
+            const sumX = calculateSum(x);
+            const sumY = calculateSum(y);
+            const sumXY = x.reduce((acc, val, i) => acc + val * y[i], 0);
+            const sumX2 = x.reduce((acc, val) => acc + val * val, 0);
+            const sumY2 = y.reduce((acc, val) => acc + val * val, 0);
+            
+            const numerator = n * sumXY - sumX * sumY;
+            const denominator = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
+            
+            if (denominator === 0) return 0;
+            return numerator / denominator;
+        }
+
+        // Uji Validitas Item-Total
+        function calculateItemTotalCorrelation(data, itemIndex) {
+            const n = data.length;
+            if (n === 0) return 0;
+            
+            // Skor item
+            const itemScores = data.map(row => row[itemIndex]);
+            
+            // Total skor (tanpa item yang diuji)
+            const totalScores = data.map(row => {
+                return row.reduce((acc, val, idx) => {
+                    return idx !== itemIndex ? acc + val : acc;
+                }, 0);
+            });
+            
+            // Korelasi antara item dengan total (tanpa item tersebut)
+            return pearsonCorrelation(itemScores, totalScores);
+        }
+
+        // Korelasi Item-Total dengan koreksi
+        function calculateCorrectedItemTotalCorrelation(data, itemIndex) {
+            const n = data.length;
+            const numItems = data[0].length;
+            
+            // Skor total termasuk item
+            const totalWithItem = data.map(row => calculateSum(row));
+            
+            // Skor item
+            const itemScores = data.map(row => row[itemIndex]);
+            
+            // Total tanpa item
+            const totalWithoutItem = data.map(row => {
+                return row.reduce((acc, val, idx) => {
+                    return idx !== itemIndex ? acc + val : acc;
+                }, 0);
+            });
+            
+            // Korelasi Pearson antara item dan total yang dikoreksi
+            const r = pearsonCorrelation(itemScores, totalWithoutItem);
+            
+            // Hitung reliabilitas item
+            const itemVariance = calculateVariance(itemScores);
+            const totalVariance = calculateVariance(totalWithItem);
+            
+            return {
+                correlation: r,
+                itemVariance: itemVariance,
+                totalVariance: totalVariance
+            };
+        }
+
+        // ==================== FUNGSI RELIABILITAS ====================
+
+        // Cronbach's Alpha
+        function calculateCronbachAlpha(data) {
+            const k = data[0].length; // Jumlah item
+            const n = data.length; // Jumlah responden
+            
+            if (k < 2) return 0;
+            
+            // Varians setiap item
+            const itemVariances = [];
+            for (let j = 0; j < k; j++) {
+                const itemScores = data.map(row => row[j]);
+                itemVariances.push(calculateVariance(itemScores));
+            }
+            
+            // Total skor setiap responden
+            const totalScores = data.map(row => calculateSum(row));
+            const totalVariance = calculateVariance(totalScores);
+            
+            // Sum of item variances
+            const sumItemVariances = calculateSum(itemVariances);
+            
+            // Cronbach's Alpha formula
+            const alpha = (k / (k - 1)) * (1 - (sumItemVariances / totalVariance));
+            
+            return {
+                alpha: Math.max(-1, Math.min(1, alpha)), // Batasi antara -1 dan 1
+                k: k,
+                sumItemVariances: sumItemVariances,
+                totalVariance: totalVariance,
+                itemVariances: itemVariances
+            };
+        }
+
+        // ==================== FUNGSI TAMPILAN ====================
+
+        function switchTab(tab) {
+            document.getElementById('manualInput').style.display = tab === 'manual' ? 'block' : 'none';
+            document.getElementById('sampleInput').style.display = tab === 'sample' ? 'block' : 'none';
+            document.getElementById('tableInput').style.display = tab === 'table' ? 'block' : 'none';
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tab === 'table') {
+                updateTable();
+            }
+        }
+
+        function updateTable() {
+            numRespondents = parseInt(document.getElementById('numRespondents').value) || 5;
+            numItems = parseInt(document.getElementById('numItems').value) || 5;
+            
+            const header = document.getElementById('tableHeader');
+            const body = document.getElementById('tableBody');
+            
+            // Header
+            let headerHTML = '<tr><th>Responden</th>';
+            for (let i = 1; i <= numItems; i++) {
+                headerHTML += `<th>Item ${i}</th>`;
+            }
+            headerHTML += '<th>Total</th></tr>';
+            header.innerHTML = headerHTML;
+            
+            // Body
+            let bodyHTML = '';
+            for (let i = 0; i < numRespondents; i++) {
+                bodyHTML += `<tr><td><strong>R${i + 1}</strong></td>`;
+                for (let j = 0; j < numItems; j++) {
+                    const value = Math.floor(Math.random() * 3) + 3; // 3-5
+                    bodyHTML += `<td><input type="number" value="${value}" min="1" max="5" style="width: 50px; text-align: center;" onchange="updateRowTotal(${i})"></td>`;
+                }
+                bodyHTML += `<td id="totalRow${i}" style="font-weight: bold;">-</td></tr>`;
+            }
+            body.innerHTML = bodyHTML;
+            
+            // Update totals
+            for (let i = 0; i < numRespondents; i++) {
+                updateRowTotal(i);
+            }
+        }
+
+        function updateRowTotal(rowIndex) {
+            const row = document.querySelectorAll('#tableBody tr')[rowIndex];
+            const inputs = row.querySelectorAll('input');
+            let total = 0;
+            inputs.forEach(input => {
+                total += parseInt(input.value) || 0;
+            });
+            document.getElementById(`totalRow${rowIndex}`).textContent = total;
+        }
+
+        function processTableData() {
+            const rows = document.querySelectorAll('#tableBody tr');
+            currentData = [];
+            
+            rows.forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                const rowData = [];
+                inputs.forEach(input => {
+                    const value = parseInt(input.value);
+                    if (!isNaN(value)) {
+                        rowData.push(value);
+                    }
+                });
+                if (rowData.length > 0) {
+                    currentData.push(rowData);
+                }
+            });
+            
+            numItems = currentData[0]?.length || 0;
+            numRespondents = currentData.length;
+            
+            displayAllResults();
+        }
+
+        function processManualData() {
+            const inputText = document.getElementById('dataInput').value.trim();
+            if (!inputText) {
+                alert('Masukkan data terlebih dahulu!');
+                return;
+            }
+            
+            // Parse data
+            const rows = inputText.split(/[\n;]/);
+            currentData = [];
+            
+            rows.forEach(row => {
+                const values = row.split(/[\s,]+/).map(v => parseFloat(v.trim()));
+                const validValues = values.filter(v => !isNaN(v));
+                if (validValues.length > 0) {
+                    currentData.push(validValues);
+                }
+            });
+            
+            if (currentData.length === 0) {
+                alert('Data tidak valid!');
+                return;
+            }
+            
+            numItems = currentData[0].length;
+            numRespondents = currentData.length;
+            
+            displayAllResults();
+        }
+
+        function loadSampleValid() {
+            // Data dengan validitas dan reliabilitas tinggi
+            currentData = [
+                [5, 5, 4, 5, 5],
+                [4, 4, 5, 4, 4],
+                [5, 5, 5, 5, 4],
+                [4, 4, 4, 4, 5],
+                [5, 5, 5, 5, 5],
+                [4, 5, 4, 4, 4],
+                [5, 4, 5, 5, 5],
+                [4, 4, 4, 4, 4],
+                [5, 5, 5, 5, 5],
+                [4, 5, 4, 5, 4]
+            ];
+            numItems = 5;
+            numRespondents = 10;
+            displayAllResults();
+        }
+
+        function loadSamplePartial() {
+            // Data dengan validitas partial
+            currentData = [
+                [5, 3, 4, 5, 2],
+                [4, 5, 5, 4, 3],
+                [5, 2, 5, 5, 5],
+                [4, 4, 2, 4, 4],
+                [5, 3, 5, 3, 5],
+                [3, 5, 4, 5, 2],
+                [5, 2, 5, 4, 5],
+                [4, 4, 3, 5, 3],
+                [2, 5, 4, 4, 5],
+                [5, 3, 5, 5, 4]
+            ];
+            numItems = 5;
+            numRespondents = 10;
+            displayAllResults();
+        }
+
+        function loadSampleInvalid() {
+            // Data dengan validitas rendah
+            currentData = [
+                [5, 1, 5, 1, 5],
+                [1, 5, 1, 5, 1],
+                [5, 1, 5, 1, 5],
+                [1, 5, 1, 5, 1],
+                [5, 1, 5, 1, 5],
+                [1, 5, 1, 5, 1],
+                [5, 1, 5, 1, 5],
+                [1, 5, 1, 5, 1],
+                [5, 1, 5, 1, 5],
+                [1, 5, 1, 5, 1]
+            ];
+            numItems = 5;
+            numRespondents = 10;
+            displayAllResults();
+        }
+
+        function displayAllResults() {
+            displayDescriptiveStats();
+            displayValidityTest();
+            displayReliabilityTest();
+        }
+
+        // ==================== TAMPILAN HASIL ====================
+
+        function displayDescriptiveStats() {
+            const container = document.getElementById('descriptiveContent');
+            
+            if (currentData.length === 0) {
+                container.innerHTML = '<p style="color: #999;">Masukkan data untuk melihat hasil</p>';
+                return;
+            }
+            
+            // Gabungkan semua data untuk statistik deskriptif
+            const allData = currentData.flat();
+            const totalScores = currentData.map(row => calculateSum(row));
+            
+            const stats = [
+                { label: 'Jumlah Responden (N)', value: numRespondents },
+                { label: 'Jumlah Item', value: numItems },
+                { label: 'Mean (Rata-rata)', value: calculateMean(allData).toFixed(2) },
+                { label: 'Median (Nilai Tengah)', value: calculateMedian(allData).toFixed(2) },
+                { label: 'Modus', value: calculateMode(allData).join(', ') || 'Tidak ada' },
+                { label: 'Standar Deviasi', value: calculateStdDev(allData).toFixed(2) },
+                { label: 'Varians', value: calculateVariance(allData).toFixed(2) },
+                { label: 'Nilai Minimum', value: calculateMin(allData).toFixed(2) },
+                { label: 'Nilai Maksimum', value: calculateMax(allData).toFixed(2) },
+                { label: 'Range', value: calculateRange(allData).toFixed(2) },
+                { label: 'Total Skor', value: calculateSum(allData).toFixed(2) }
+            ];
+            
+            let html = '';
+            stats.forEach(stat => {
+                html += `
+                    <div class="result-item">
+                        <span class="result-label">${stat.label}</span>
+                        <span class="result-value">${stat.value}</span>
+                    </div>
+                `;
+            });
+            
+            // Tambah statistik per item
+            html += '<div style="margin-top: 10px;"><strong>Statistik per Item:</strong></div>';
+            html += '<table class="data-table" style="margin-top: 5px;">';
+            html += '<tr><th>Item</th><th>Mean</th><th>Median</th><th>Modus</th><th>Std Dev</th><th>Total</th></tr>';
+            
+            for (let i = 0; i < numItems; i++) {
+                const itemData = currentData.map(row => row[i]).filter(v => !isNaN(v));
+                const mean = calculateMean(itemData);
+                const median = calculateMedian(itemData);
+                const mode = calculateMode(itemData).join(',') || '-';
+                const stdDev = calculateStdDev(itemData);
+                const total = calculateSum(itemData);
+                
+                html += `<tr>
+                    <td><strong>Item ${i + 1}</strong></td>
+                    <td>${mean.toFixed(2)}</td>
+                    <td>${median.toFixed(2)}</td>
+                    <td>${mode}</td>
+                    <td>${stdDev.toFixed(2)}</td>
+                    <td>${total.toFixed(0)}</td>
+                </tr>`;
+            }
+            
+            html += '</table>';
+            
+            container.innerHTML = html;
+        }
+
+        function displayValidityTest() {
+            const container = document.getElementById('validityContent');
+            
+            if (currentData.length === 0) {
+                container.innerHTML = '<p style="color: #999;">Masukkan data untuk melihat hasil</p>';
+                return;
+            }
+            
+            // Hitung r-tabel untuk df = n-2 pada alpha 0.05 (two-tailed)
+            const df = numRespondents - 2;
+            const rTable = getRTable(df);
+            
+            let html = `<p style="font-size: 13px; margin-bottom: 10px;">
+                <strong>df = ${df}</strong> | <strong>r-tabel (α=0.05) = ${rTable.toFixed(3)}</strong>
+            </p>`;
+            
+            html += '<table class="data-table">';
+            html += '<tr><th>Item</th><th>r-hitung</th><th>r-tabel</th><th>Status</th><th>Keterangan</th></tr>';
+            
+            let validCount = 0;
+            
+            for (let i = 0; i < numItems; i++) {
+                const result = calculateCorrectedItemTotalCorrelation(currentData, i);
+                const rHitung = result.correlation;
+                const isValid = Math.abs(rHitung) >= rTable;
+                
+                if (isValid) validCount++;
+                
+                const statusClass = isValid ? 'valid' : 'invalid';
+                const statusText = isValid ? '✅ Valid' : '❌ Tidak Valid';
+                const keterangan = isValid ? 
+                    'Item dapat digunakan' : 
+                    'Item perlu direvisi/dihapus';
+                
+                html += `<tr class="${statusClass}">
+                    <td><strong>Item ${i + 1}</strong></td>
+                    <td class="r-table">${rHitung.toFixed(3)}</td>
+                    <td>${rTable.toFixed(3)}</td>
+                    <td class="${isValid ? 'result-value significant' : 'result-value not-significant'}">${statusText}</td>
+                    <td>${keterangan}</td>
+                </tr>`;
+            }
+            
+            html += '</table>';
+            
+            // Kesimpulan
+            html += '<div class="interpretation success" style="margin-top: 10px;">';
+            html += `<strong>Kesimpulan:</strong> ${validCount} dari ${numItems} item valid (${((validCount/numItems)*100).toFixed(1)}%)`;
+            if (validCount === numItems) {
+                html += '<br>✅ Semua item valid dan dapat digunakan untuk penelitian.';
+            } else if (validCount >= numItems * 0.5) {
+                html += '<br>⚠️ Beberapa item perlu direvisi. Item tidak valid sebaiknya dihapus atau diperbaiki.';
+            } else {
+                html += '<br>❌ Sebagian besar item tidak valid. Instrumen perlu direvisi total.';
+            }
+            html += '</div>';
+            
+            container.innerHTML = html;
+        }
+
+        function displayReliabilityTest() {
+            const container = document.getElementById('reliabilityContent');
+            
+            if (currentData.length === 0) {
+                container.innerHTML = '<p style="color: #999;">Masukkan data untuk melihat hasil</p>';
+                return;
+            }
+            
+            const result = calculateCronbachAlpha(currentData);
+            const alpha = result.alpha;
+            
+            // Interpretasi Cronbach's Alpha
+            let interpretation = '';
+            let interpretationClass = '';
+            
+            if (alpha >= 0.90) {
+                interpretation = 'Sangat Tinggi (Excellent)';
+                interpretationClass = 'success';
+            } else if (alpha >= 0.80) {
+                interpretation = 'Tinggi (Good)';
+                interpretationClass = 'success';
+            } else if (alpha >= 0.70) {
+                interpretation = 'Cukup (Acceptable)';
+                interpretationClass = 'success';
+            } else if (alpha >= 0.60) {
+                interpretation = 'Rendah (Questionable)';
+                interpretationClass = 'warning';
+            } else if (alpha >= 0.50) {
+                interpretation = 'Sangat Rendah (Poor)';
+                interpretationClass = 'danger';
+            } else {
+                interpretation = 'Tidak Reliabel (Unacceptable)';
+                interpretationClass = 'danger';
+            }
+            
+            let html = `
+                <div class="result-item">
+                    <span class="result-label">Cronbach's Alpha</span>
+                    <span class="result-value ${alpha >= 0.70 ? 'significant' : 'not-significant'}">${alpha.toFixed(4)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Jumlah Item (k)</span>
+                    <span class="result-value">${result.k}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Variance</span>
+                    <span class="result-value">${result.totalVariance.toFixed(2)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Sum Item Variances</span>
+                    <span class="result-value">${result.sumItemVariances.toFixed(2)}</span>
+                </div>
+                
+                <div class="interpretation ${interpretationClass}">
+                    <strong>Interpretasi:</strong> ${interpretation}
+                    <br>${alpha >= 0.70 ? '✅ Instrumen dinyatakan RELIABEL' : '❌ Instrumen dinyatakan TIDAK RELIABEL'}
+                    ${alpha >= 0.70 ? ' dan dapat digunakan untuk penelitian.' : ', perlu direvisi.'}
+                </div>
+                
+                <div style="margin-top: 10px;">
+                    <strong>Item Variances:</strong>
+                    <table class="data-table" style="margin-top: 5px;">
+                        <tr>
+                            ${result.itemVariances.map((v, i) => `<th>Item ${i + 1}</th>`).join('')}
+                        </tr>
+                        <tr>
+                            ${result.itemVariances.map(v => `<td>${v.toFixed(2)}</td>`).join('')}
+                        </tr>
+                    </table>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        // ==================== FUNGSI PEMBANTU ====================
+
+        function getRTable(df) {
+            // Nilai r-tabel untuk alpha 0.05 (two-tailed)
+            const rTableValues = {
+                1: 0.997, 2: 0.950, 3: 0.878, 4: 0.811, 5: 0.754,
+                6: 0.707, 7: 0.666, 8: 0.632, 9: 0.602, 10: 0.576,
+                11: 0.553, 12: 0.532, 13: 0.514, 14: 0.497, 15: 0.482,
+                16: 0.468, 17: 0.456, 18: 0.444, 19: 0.433, 20: 0.423,
+                21: 0.413, 22: 0.404, 23: 0.396, 24: 0.388, 25: 0.381,
+                26: 0.374, 27: 0.367, 28: 0.361, 29: 0.355, 30: 0.349,
+                35: 0.325, 40: 0.304, 45: 0.288, 50: 0.273,
+                60: 0.250, 70: 0.232, 80: 0.217, 90: 0.205, 100: 0.195
+            };
+            
+            if (rTableValues[df]) return rTableValues[df];
+            if (df > 100) return 0.195;
+            if (df < 1) return 0.997;
+            
+            // Interpolasi untuk nilai di antara
+            const keys = Object.keys(rTableValues).map(Number).sort((a, b) => a - b);
+            let lower = keys[0];
+            let upper = keys[keys.length - 1];
+            
+            for (let i = 0; i < keys.length - 1; i++) {
+                if (df >= keys[i] && df <= keys[i + 1]) {
+                    lower = keys[i];
+                    upper = keys[i + 1];
+                    break;
+                }
+            }
+            
+            const ratio = (df - lower) / (upper - lower);
+            return rTableValues[lower] + ratio * (rTableValues[upper] - rTableValues[lower]);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTable();
+            loadSampleValid(); // Load sample data on start
+        });
+    </script>
+</body>
+</html>
