@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPSS Web - Analisis Statistik Lengkap</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -19,9 +20,8 @@
             position: relative;
         }
 
-        /* ===== WATERMARK BACKGROUND ===== */
         body::before {
-            content: "REZA ALAMEKA";
+            content: "Instagram:@rezalameka";
             position: fixed;
             top: 50%;
             left: 50%;
@@ -34,10 +34,8 @@
             letter-spacing: 20px;
             white-space: nowrap;
             font-family: 'Arial Black', sans-serif;
-            text-shadow: 0 0 50px rgba(26, 35, 126, 0.03);
         }
 
-        /* ===== WATERMARK DI SETIAP CARD ===== */
         .card {
             background: white;
             border-radius: 12px;
@@ -50,7 +48,7 @@
         }
 
         .card::after {
-            content: "REZA ALAMEKA";
+            content: "Instagram:@rezalameka";
             position: absolute;
             bottom: -10px;
             right: -10px;
@@ -63,7 +61,6 @@
             font-family: 'Arial', sans-serif;
         }
 
-        /* ===== WATERMARK DI HEADER ===== */
         .header {
             background: linear-gradient(135deg, #1a237e, #0d47a1);
             color: white;
@@ -81,7 +78,7 @@
         }
 
         .header::after {
-            content: "REZA ALAMEKA";
+            content: "Instagram:@rezalameka";
             position: absolute;
             bottom: 5px;
             right: 20px;
@@ -120,143 +117,6 @@
             z-index: 1;
         }
 
-        /* ===== WATERMARK DI FOOTER ===== */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-size: 13px;
-            margin-top: 20px;
-            border-top: 1px solid #e0e0e0;
-            position: relative;
-        }
-
-        .footer .watermark {
-            font-size: 16px;
-            font-weight: 700;
-            color: #1a237e;
-            letter-spacing: 3px;
-            margin-top: 5px;
-            opacity: 0.6;
-        }
-
-        /* ===== WATERMARK DI SETIAP STAT BOX ===== */
-        .stat-box {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 12px 15px;
-            margin-bottom: 8px;
-            border-left: 4px solid #0d47a1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-box::after {
-            content: "RA";
-            position: absolute;
-            right: 5px;
-            bottom: 0px;
-            font-size: 10px;
-            font-weight: 700;
-            color: rgba(26, 35, 126, 0.08);
-            font-family: 'Arial', sans-serif;
-        }
-
-        /* ===== WATERMARK DI TABLE ===== */
-        table th {
-            background: #1a237e;
-            color: white;
-            padding: 10px 12px;
-            text-align: center;
-            font-weight: 600;
-            position: relative;
-        }
-
-        table th::after {
-            content: "REZA ALAMEKA";
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 9px;
-            font-weight: 300;
-            opacity: 0.15;
-            letter-spacing: 2px;
-            color: white;
-        }
-
-        /* ===== WATERMARK DI CHART ===== */
-        .chart-container {
-            position: relative;
-            height: 300px;
-            width: 100%;
-        }
-
-        .chart-container::after {
-            content: "REZA ALAMEKA";
-            position: absolute;
-            bottom: 10px;
-            right: 15px;
-            font-size: 11px;
-            font-weight: 600;
-            color: rgba(26, 35, 126, 0.08);
-            letter-spacing: 2px;
-            pointer-events: none;
-            font-family: 'Arial', sans-serif;
-        }
-
-        /* ===== WATERMARK DI CARD TITLE ===== */
-        .card-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #1a237e;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e8eaf6;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            position: relative;
-        }
-
-        .card-title::after {
-            content: "RA";
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 10px;
-            font-weight: 300;
-            color: rgba(26, 35, 126, 0.1);
-            letter-spacing: 2px;
-        }
-
-        /* ===== WATERMARK DI INTERPRETATION BOX ===== */
-        .interpretation-box {
-            background: #e8eaf6;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-top: 15px;
-            border-left: 5px solid #0d47a1;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .interpretation-box::after {
-            content: "REZA ALAMEKA";
-            position: absolute;
-            bottom: 3px;
-            right: 8px;
-            font-size: 9px;
-            font-weight: 600;
-            color: rgba(26, 35, 126, 0.06);
-            letter-spacing: 2px;
-        }
-
-        /* ===== REST OF STYLES ===== */
         .nav-tabs {
             display: flex;
             gap: 5px;
@@ -305,6 +165,31 @@
         }
         .full-width {
             grid-column: 1 / -1;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a237e;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eaf6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .card-title::after {
+            content: "RA";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            font-weight: 300;
+            color: rgba(26, 35, 126, 0.1);
+            letter-spacing: 2px;
         }
 
         .input-group {
@@ -367,7 +252,18 @@
         .btn-purple:hover { background: #7b1fa2; }
         .btn-teal { background: #00695c; color: white; }
         .btn-teal:hover { background: #00796b; }
+        .btn-excel { background: #1d6f42; color: white; }
+        .btn-excel:hover { background: #1b5e3a; }
+        .btn-import { background: #e67e22; color: white; }
+        .btn-import:hover { background: #d35400; }
         .btn-sm { padding: 6px 14px; font-size: 12px; }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
 
         .table-wrap {
             overflow-x: auto;
@@ -377,6 +273,26 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 13px;
+        }
+        table th {
+            background: #1a237e;
+            color: white;
+            padding: 10px 12px;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
+        }
+        table th::after {
+            content: "Instagram:@rezalameka";
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 9px;
+            font-weight: 300;
+            opacity: 0.15;
+            letter-spacing: 2px;
+            color: white;
         }
         table td {
             padding: 8px 12px;
@@ -390,6 +306,28 @@
             background: #fafafa;
         }
 
+        .stat-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-left: 4px solid #0d47a1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-box::after {
+            content: "RA";
+            position: absolute;
+            right: 5px;
+            bottom: 0px;
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(26, 35, 126, 0.08);
+            font-family: 'Arial', sans-serif;
+        }
         .stat-box .label {
             font-weight: 600;
             color: #555;
@@ -405,6 +343,53 @@
         .stat-box .value.red { color: #c62828; }
         .stat-box .value.orange { color: #e65100; }
 
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .chart-container::after {
+            content: "Instagram:@rezalameka";
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(26, 35, 126, 0.08);
+            letter-spacing: 2px;
+            pointer-events: none;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .interpretation-box {
+            background: #e8eaf6;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 5px solid #0d47a1;
+            position: relative;
+            overflow: hidden;
+        }
+        .interpretation-box::after {
+            content: "Instagram:@rezalameka";
+            position: absolute;
+            bottom: 3px;
+            right: 8px;
+            font-size: 9px;
+            font-weight: 600;
+            color: rgba(26, 35, 126, 0.06);
+            letter-spacing: 2px;
+        }
+        .interpretation-box h4 {
+            color: #1a237e;
+            margin-bottom: 8px;
+        }
+        .interpretation-box p {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.6;
+        }
+
         .tab-content {
             display: none;
         }
@@ -415,6 +400,82 @@
         .table-scroll {
             max-height: 400px;
             overflow-y: auto;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 13px;
+            margin-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            position: relative;
+        }
+        .footer .watermark {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a237e;
+            letter-spacing: 3px;
+            margin-top: 5px;
+            opacity: 0.6;
+        }
+
+        .file-upload {
+            border: 3px dashed #e0e0e0;
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+        .file-upload:hover {
+            border-color: #0d47a1;
+            background: #f0f4ff;
+        }
+        .file-upload.dragover {
+            border-color: #2e7d32;
+            background: #e8f5e9;
+        }
+        .file-upload .icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .file-upload p {
+            color: #666;
+            font-size: 14px;
+        }
+        .file-upload .hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2e7d32;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 9999;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s;
+            font-weight: 600;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast.error {
+            background: #c62828;
         }
 
         @media (max-width: 768px) {
@@ -430,6 +491,10 @@
             }
             .card::after {
                 font-size: 12px;
+            }
+            .btn-group .btn {
+                flex: 1;
+                justify-content: center;
             }
         }
     </style>
@@ -453,12 +518,14 @@
     <!-- NAVIGASI -->
     <div class="nav-tabs" id="navTabs">
         <button class="nav-tab active" data-tab="tabInput"><span class="icon">📝</span> Input Data</button>
+        <button class="nav-tab" data-tab="tabImport"><span class="icon">📤</span> Import Excel</button>
         <button class="nav-tab" data-tab="tabDeskriptif"><span class="icon">📊</span> Deskriptif</button>
         <button class="nav-tab" data-tab="tabValiditas"><span class="icon">✅</span> Validitas</button>
         <button class="nav-tab" data-tab="tabReliabilitas"><span class="icon">🔄</span> Reliabilitas</button>
         <button class="nav-tab" data-tab="tabKorelasi"><span class="icon">🔗</span> Korelasi</button>
         <button class="nav-tab" data-tab="tabRegresi"><span class="icon">📈</span> Regresi</button>
         <button class="nav-tab" data-tab="tabKurva"><span class="icon">📉</span> Kurva</button>
+        <button class="nav-tab" data-tab="tabExport"><span class="icon">📤</span> Export</button>
     </div>
 
     <!-- TAB 1: INPUT DATA -->
@@ -474,7 +541,7 @@
                     <label>Data (satu responden per baris, nilai dipisah spasi/koma):</label>
                     <textarea class="form-control" id="dataText" rows="8" placeholder="5 4 3 5 4&#10;4 3 5 4 3"></textarea>
                 </div>
-                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+                <div class="btn-group">
                     <button class="btn btn-primary" onclick="processData()">▶ Proses Data</button>
                     <button class="btn btn-success" onclick="loadSampleValid()">📥 Data Valid</button>
                     <button class="btn btn-warning" onclick="loadSamplePartial()">📥 Data Partial</button>
@@ -490,7 +557,39 @@
         </div>
     </div>
 
-    <!-- TAB 2: DESKRIPTIF -->
+    <!-- TAB 2: IMPORT EXCEL -->
+    <div class="tab-content" id="tabImport">
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title">📤 Import dari Excel</div>
+                <p style="color:#666; margin-bottom:15px;">
+                    Upload file Excel (.xlsx, .xls) untuk mengimport data.
+                </p>
+                <div class="file-upload" id="fileDropZone" onclick="document.getElementById('fileInput').click()">
+                    <span class="icon">📂</span>
+                    <p><strong>Klik untuk upload</strong> atau drag & drop file</p>
+                    <span class="hint">Support: .xlsx, .xls</span>
+                    <input type="file" id="fileInput" accept=".xlsx,.xls">
+                </div>
+                <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+                    <button class="btn btn-import" onclick="document.getElementById('fileInput').click()">📤 Pilih File</button>
+                    <button class="btn btn-primary" onclick="importFromExcel()">▶ Proses Import</button>
+                    <button class="btn btn-danger" onclick="clearImportPreview()">🗑 Clear</button>
+                </div>
+                <div id="importStatus" style="margin-top:10px; font-size:13px; color:#666;"></div>
+            </div>
+            <div class="card">
+                <div class="card-title">📋 Preview Import</div>
+                <div id="importPreview">
+                    <p style="color:#999; text-align:center; padding:30px 0;">
+                        Upload file Excel untuk melihat preview
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: DESKRIPTIF -->
     <div class="tab-content" id="tabDeskriptif">
         <div class="grid-2">
             <div class="card">
@@ -506,7 +605,7 @@
         </div>
     </div>
 
-    <!-- TAB 3: VALIDITAS -->
+    <!-- TAB 4: VALIDITAS -->
     <div class="tab-content" id="tabValiditas">
         <div class="grid-2">
             <div class="card">
@@ -522,7 +621,7 @@
         </div>
     </div>
 
-    <!-- TAB 4: RELIABILITAS -->
+    <!-- TAB 5: RELIABILITAS -->
     <div class="tab-content" id="tabReliabilitas">
         <div class="grid-2">
             <div class="card">
@@ -540,7 +639,7 @@
         </div>
     </div>
 
-    <!-- TAB 5: KORELASI -->
+    <!-- TAB 6: KORELASI -->
     <div class="tab-content" id="tabKorelasi">
         <div class="grid-2">
             <div class="card">
@@ -561,7 +660,7 @@
         </div>
     </div>
 
-    <!-- TAB 6: REGRESI -->
+    <!-- TAB 7: REGRESI -->
     <div class="tab-content" id="tabRegresi">
         <div class="grid-2">
             <div class="card">
@@ -584,7 +683,7 @@
         </div>
     </div>
 
-    <!-- TAB 7: KURVA -->
+    <!-- TAB 8: KURVA -->
     <div class="tab-content" id="tabKurva">
         <div class="grid-3">
             <div class="card">
@@ -607,16 +706,42 @@
         </div>
     </div>
 
+    <!-- TAB 9: EXPORT -->
+    <div class="tab-content" id="tabExport">
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title">📤 Export ke Excel</div>
+                <p style="color:#666; margin-bottom:15px;">
+                    Ekspor semua data dan hasil analisis ke file Excel (.xlsx)
+                </p>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <button class="btn btn-excel" onclick="exportToExcel('all')">📊 Export Semua</button>
+                    <button class="btn btn-success" onclick="exportToExcel('data')">📋 Export Data</button>
+                    <button class="btn btn-primary" onclick="exportToExcel('deskriptif')">📈 Export Deskriptif</button>
+                    <button class="btn btn-purple" onclick="exportToExcel('validitas')">✅ Export Validitas</button>
+                    <button class="btn btn-warning" onclick="exportToExcel('reliabilitas')">🔄 Export Reliabilitas</button>
+                    <button class="btn btn-danger" onclick="exportToExcel('korelasi')">🔗 Export Korelasi</button>
+                    <button class="btn btn-teal" onclick="exportToExcel('regresi')">📈 Export Regresi</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">📊 Preview Export</div>
+                <div id="exportPreview">
+                    <p style="color:#999; text-align:center; padding:30px 0;">Klik tombol export</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- FOOTER -->
     <div class="footer">
         <p>📊 SPSS Web - Analisis Statistik Lengkap</p>
-        <div class="watermark">✦ REZA ALAMEKA ✦</div>
-        <p style="font-size:12px; color:#999; margin-top:5px;">
-            Gunakan untuk keperluan penelitian dan analisis data
-        </p>
+        <div class="watermark">✦ Instagram:@rezalameka ✦</div>
     </div>
-
 </div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
 
 <script>
 // ============================================================
@@ -627,6 +752,19 @@ let varNames = [];
 let numRespondents = 0;
 let numVariables = 0;
 let chartInstances = {};
+let importedData = null;
+let importedVarNames = [];
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg, err = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (err ? ' error' : '');
+    setTimeout(() => t.classList.add('show'), 100);
+    setTimeout(() => t.classList.remove('show'), 3000);
+}
 
 // ============================================================
 // NAVIGASI
@@ -642,68 +780,40 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
 });
 
 // ============================================================
-// FUNGSI STATISTIK DASAR
+// FUNGSI STATISTIK
 // ============================================================
-function mean(arr) {
-    if (!arr || arr.length === 0) return 0;
-    return arr.reduce((a,b) => a+b, 0) / arr.length;
-}
-
-function sum(arr) {
-    return arr.reduce((a,b) => a+b, 0);
-}
-
-function variance(arr) {
-    if (!arr || arr.length < 2) return 0;
-    const m = mean(arr);
-    return arr.reduce((a,b) => a + Math.pow(b-m, 2), 0) / (arr.length - 1);
-}
-
-function stdDev(arr) {
-    return Math.sqrt(variance(arr));
-}
-
-function median(arr) {
-    if (!arr || arr.length === 0) return 0;
-    const sorted = [...arr].sort((a,b) => a-b);
-    const mid = Math.floor(sorted.length/2);
-    return sorted.length % 2 === 0 ? (sorted[mid-1] + sorted[mid]) / 2 : sorted[mid];
-}
-
+function mean(arr) { if (!arr || arr.length === 0) return 0; return arr.reduce((a,b) => a+b, 0) / arr.length; }
+function sum(arr) { return arr.reduce((a,b) => a+b, 0); }
+function variance(arr) { if (!arr || arr.length < 2) return 0; const m = mean(arr); return arr.reduce((a,b) => a + Math.pow(b-m, 2), 0) / (arr.length - 1); }
+function stdDev(arr) { return Math.sqrt(variance(arr)); }
+function median(arr) { if (!arr || arr.length === 0) return 0; const s = [...arr].sort((a,b)=>a-b); const m = Math.floor(s.length/2); return s.length%2===0 ? (s[m-1]+s[m])/2 : s[m]; }
 function min(arr) { return Math.min(...arr); }
 function max(arr) { return Math.max(...arr); }
 
 function pearson(x, y) {
     const n = x.length;
     if (n === 0) return 0;
-    const sumX = sum(x), sumY = sum(y);
-    const sumXY = x.reduce((a,b,i) => a + b*y[i], 0);
-    const sumX2 = x.reduce((a,b) => a + b*b, 0);
-    const sumY2 = y.reduce((a,b) => a + b*b, 0);
-    const num = n * sumXY - sumX * sumY;
-    const den = Math.sqrt((n * sumX2 - sumX*sumX) * (n * sumY2 - sumY*sumY));
+    const sx = sum(x), sy = sum(y);
+    const sxy = x.reduce((a,b,i) => a + b*y[i], 0);
+    const sx2 = x.reduce((a,b) => a + b*b, 0);
+    const sy2 = y.reduce((a,b) => a + b*b, 0);
+    const num = n * sxy - sx * sy;
+    const den = Math.sqrt((n * sx2 - sx*sx) * (n * sy2 - sy*sy));
     return den === 0 ? 0 : num / den;
 }
 
 function getRTable(df) {
-    const table = {
-        1:0.997,2:0.950,3:0.878,4:0.811,5:0.754,6:0.707,7:0.666,8:0.632,
-        9:0.602,10:0.576,11:0.553,12:0.532,13:0.514,14:0.497,15:0.482,
-        16:0.468,17:0.456,18:0.444,19:0.433,20:0.423,21:0.413,22:0.404,
-        23:0.396,24:0.388,25:0.381,26:0.374,27:0.367,28:0.361,29:0.355,
-        30:0.349,35:0.325,40:0.304,45:0.288,50:0.273,60:0.250,70:0.232,
-        80:0.217,90:0.205,100:0.195
-    };
-    if (table[df]) return table[df];
+    const t = {1:0.997,2:0.950,3:0.878,4:0.811,5:0.754,6:0.707,7:0.666,8:0.632,9:0.602,10:0.576,11:0.553,12:0.532,13:0.514,14:0.497,15:0.482,16:0.468,17:0.456,18:0.444,19:0.433,20:0.423,21:0.413,22:0.404,23:0.396,24:0.388,25:0.381,26:0.374,27:0.367,28:0.361,29:0.355,30:0.349,35:0.325,40:0.304,45:0.288,50:0.273,60:0.250,70:0.232,80:0.217,90:0.205,100:0.195};
+    if (t[df]) return t[df];
     if (df > 100) return 0.195;
     if (df < 1) return 0.997;
-    const keys = Object.keys(table).map(Number).sort((a,b)=>a-b);
-    let lower=keys[0], upper=keys[keys.length-1];
+    const keys = Object.keys(t).map(Number).sort((a,b)=>a-b);
+    let l=keys[0], u=keys[keys.length-1];
     for (let i=0; i<keys.length-1; i++) {
-        if (df >= keys[i] && df <= keys[i+1]) { lower=keys[i]; upper=keys[i+1]; break; }
+        if (df >= keys[i] && df <= keys[i+1]) { l=keys[i]; u=keys[i+1]; break; }
     }
-    const ratio = (df-lower)/(upper-lower);
-    return table[lower] + ratio * (table[upper]-table[lower]);
+    const r = (df-l)/(u-l);
+    return t[l] + r * (t[u]-t[l]);
 }
 
 // ============================================================
@@ -711,51 +821,57 @@ function getRTable(df) {
 // ============================================================
 function processData() {
     const text = document.getElementById('dataText').value.trim();
-    if (!text) { alert('Masukkan data terlebih dahulu!'); return; }
-
+    if (!text) {
+        if (importedData && importedData.length > 0) { useImportedData(); return; }
+        alert('Masukkan data atau import dari Excel!');
+        return;
+    }
     const rows = text.split(/[\n;]/).filter(r => r.trim());
     dataMatrix = [];
     rows.forEach(row => {
         const vals = row.split(/[\s,]+/).map(v => parseFloat(v.trim())).filter(v => !isNaN(v));
         if (vals.length > 0) dataMatrix.push(vals);
     });
-
     if (dataMatrix.length === 0) { alert('Data tidak valid!'); return; }
-
     const nameInput = document.getElementById('varNames').value.trim();
     varNames = nameInput.split(',').map(s => s.trim()).filter(s => s);
-    if (varNames.length === 0) {
-        varNames = dataMatrix[0].map((_, i) => `Var${i+1}`);
-    }
-
+    if (varNames.length === 0) varNames = dataMatrix[0].map((_, i) => `Var${i+1}`);
     numRespondents = dataMatrix.length;
     numVariables = dataMatrix[0].length;
-
     document.getElementById('dataStatus').innerHTML = `✅ ${numRespondents} responden, ${numVariables} variabel`;
-
     showPreview();
     updateAllAnalyses();
     setTimeout(refreshCharts, 300);
+    showToast('✅ Data berhasil diproses!');
+}
+
+function useImportedData() {
+    dataMatrix = importedData.map(row => [...row]);
+    varNames = [...importedVarNames];
+    numRespondents = dataMatrix.length;
+    numVariables = dataMatrix[0].length;
+    document.getElementById('dataStatus').innerHTML = `✅ ${numRespondents} responden, ${numVariables} variabel (dari import)`;
+    document.getElementById('varNames').value = varNames.join(', ');
+    document.getElementById('dataText').value = dataMatrix.map(row => row.join(' ')).join('\n');
+    showPreview();
+    updateAllAnalyses();
+    setTimeout(refreshCharts, 300);
+    showToast('✅ Data import berhasil!');
 }
 
 function showPreview() {
-    const container = document.getElementById('previewContainer');
-    if (dataMatrix.length === 0) {
-        container.innerHTML = '<p style="color:#999; text-align:center; padding:30px 0;">Belum ada data.</p>';
-        return;
-    }
-
+    const c = document.getElementById('previewContainer');
+    if (dataMatrix.length === 0) { c.innerHTML = '<p style="color:#999; text-align:center; padding:30px 0;">Belum ada data.</p>'; return; }
     let html = `<div class="table-scroll"><table><tr><th>Responden</th>`;
     varNames.forEach(v => html += `<th>${v}</th>`);
     html += `<th>Total</th></tr>`;
-
     dataMatrix.forEach((row, i) => {
         html += `<tr><td><strong>R${i+1}</strong></td>`;
         row.forEach(v => html += `<td>${v}</td>`);
         html += `<td>${sum(row).toFixed(1)}</td></tr>`;
     });
     html += '</table></div>';
-    container.innerHTML = html;
+    c.innerHTML = html;
 }
 
 function updateAllAnalyses() {
@@ -770,41 +886,112 @@ function updateAllAnalyses() {
 }
 
 // ============================================================
+// IMPORT EXCEL
+// ============================================================
+const dropZone = document.getElementById('fileDropZone');
+const fileInput = document.getElementById('fileInput');
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    if (e.dataTransfer.files.length > 0) { fileInput.files = e.dataTransfer.files; importFromExcel(); }
+});
+fileInput.addEventListener('change', () => { if (fileInput.files.length > 0) importFromExcel(); });
+
+function importFromExcel() {
+    const file = fileInput.files[0];
+    if (!file) { showToast('❌ Pilih file Excel!', true); return; }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const data = new Uint8Array(e.target.result);
+            const wb = XLSX.read(data, { type: 'array' });
+            const ws = wb.Sheets[wb.SheetNames[0]];
+            const json = XLSX.utils.sheet_to_json(ws, { header: 1 });
+            if (json.length === 0) { showToast('❌ File kosong!', true); return; }
+            let headerRow = json[0];
+            let startRow = 0;
+            const isHeader = headerRow.some(cell => isNaN(parseFloat(cell)));
+            if (isHeader) { importedVarNames = headerRow.map(String); startRow = 1; }
+            else { importedVarNames = headerRow.map((_, i) => `Var${i+1}`); startRow = 0; }
+            importedData = [];
+            for (let i = startRow; i < json.length; i++) {
+                const row = json[i];
+                const numRow = row.map(v => parseFloat(v)).filter(v => !isNaN(v));
+                if (numRow.length > 0) importedData.push(numRow);
+            }
+            if (importedData.length === 0) { showToast('❌ Tidak ada data numerik!', true); return; }
+            const maxCols = Math.max(...importedData.map(row => row.length));
+            importedData = importedData.map(row => { while (row.length < maxCols) row.push(0); return row.slice(0, maxCols); });
+            if (importedVarNames.length < maxCols) {
+                for (let i = importedVarNames.length; i < maxCols; i++) importedVarNames.push(`Var${i+1}`);
+            }
+            showImportPreview(importedData, importedVarNames);
+            document.getElementById('importStatus').innerHTML = `✅ ${importedData.length} responden, ${importedVarNames.length} variabel`;
+            showToast(`✅ Import berhasil! ${importedData.length} responden`);
+            setTimeout(() => {
+                useImportedData();
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelector('[data-tab="tabInput"]').classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.getElementById('tabInput').classList.add('active');
+            }, 500);
+        } catch(err) {
+            showToast('❌ Gagal: ' + err.message, true);
+        }
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+function showImportPreview(data, vNames) {
+    const c = document.getElementById('importPreview');
+    if (!data || data.length === 0) { c.innerHTML = '<p style="color:#999; text-align:center; padding:30px 0;">Tidak ada data</p>'; return; }
+    const maxRows = Math.min(data.length, 10);
+    let html = `<div class="table-scroll"><table><tr><th>#</th>`;
+    vNames.forEach(v => html += `<th>${v}</th>`);
+    html += '</tr>';
+    for (let i = 0; i < maxRows; i++) {
+        html += `<tr><td><strong>${i+1}</strong></td>`;
+        data[i].forEach(v => html += `<td>${v}</td>`);
+        html += '</tr>';
+    }
+    if (data.length > maxRows) html += `<tr><td colspan="${vNames.length+1}" style="color:#999;">... dan ${data.length - maxRows} baris</td></tr>`;
+    html += '</table></div>';
+    c.innerHTML = html;
+}
+
+function clearImportPreview() {
+    importedData = null; importedVarNames = []; fileInput.value = '';
+    document.getElementById('importPreview').innerHTML = '<p style="color:#999; text-align:center; padding:30px 0;">Upload file Excel</p>';
+    document.getElementById('importStatus').innerHTML = '';
+    showToast('🗑 Import dibersihkan');
+}
+
+// ============================================================
 // 1. DESKRIPTIF
 // ============================================================
 function updateDeskriptif() {
-    const container = document.getElementById('deskriptifContent');
-    const allData = dataMatrix.flat();
-
+    const c = document.getElementById('deskriptifContent');
+    const all = dataMatrix.flat();
     let html = `
-        <div class="stat-box"><span class="label">Jumlah Responden (N)</span><span class="value">${numRespondents}</span></div>
-        <div class="stat-box"><span class="label">Jumlah Variabel</span><span class="value">${numVariables}</span></div>
-        <div class="stat-box"><span class="label">Mean (Rata-rata)</span><span class="value">${mean(allData).toFixed(3)}</span></div>
-        <div class="stat-box"><span class="label">Median</span><span class="value">${median(allData).toFixed(3)}</span></div>
-        <div class="stat-box"><span class="label">Standar Deviasi</span><span class="value">${stdDev(allData).toFixed(3)}</span></div>
-        <div class="stat-box"><span class="label">Varians</span><span class="value">${variance(allData).toFixed(3)}</span></div>
-        <div class="stat-box"><span class="label">Minimum</span><span class="value">${min(allData).toFixed(2)}</span></div>
-        <div class="stat-box"><span class="label">Maksimum</span><span class="value">${max(allData).toFixed(2)}</span></div>
+        <div class="stat-box"><span class="label">Responden (N)</span><span class="value">${numRespondents}</span></div>
+        <div class="stat-box"><span class="label">Variabel</span><span class="value">${numVariables}</span></div>
+        <div class="stat-box"><span class="label">Mean</span><span class="value">${mean(all).toFixed(3)}</span></div>
+        <div class="stat-box"><span class="label">Median</span><span class="value">${median(all).toFixed(3)}</span></div>
+        <div class="stat-box"><span class="label">Std Dev</span><span class="value">${stdDev(all).toFixed(3)}</span></div>
+        <div class="stat-box"><span class="label">Varians</span><span class="value">${variance(all).toFixed(3)}</span></div>
+        <div class="stat-box"><span class="label">Min</span><span class="value">${min(all).toFixed(2)}</span></div>
+        <div class="stat-box"><span class="label">Max</span><span class="value">${max(all).toFixed(2)}</span></div>
     `;
-
-    // Statistik per variabel
-    html += `<div style="margin-top:15px;"><strong>Statistik per Variabel:</strong></div>`;
-    html += `<div class="table-scroll"><table><tr><th>Variabel</th><th>Mean</th><th>Median</th><th>Std Dev</th><th>Min</th><th>Max</th></tr>`;
+    html += `<div style="margin-top:15px;"><strong>Per Variabel:</strong></div><div class="table-scroll"><table><tr><th>Variabel</th><th>Mean</th><th>Median</th><th>Std Dev</th><th>Min</th><th>Max</th></tr>`;
     for (let i=0; i<numVariables; i++) {
         const col = dataMatrix.map(r => r[i]);
-        html += `<tr>
-            <td><strong>${varNames[i]}</strong></td>
-            <td>${mean(col).toFixed(3)}</td>
-            <td>${median(col).toFixed(3)}</td>
-            <td>${stdDev(col).toFixed(3)}</td>
-            <td>${min(col).toFixed(2)}</td>
-            <td>${max(col).toFixed(2)}</td>
-        </tr>`;
+        html += `<tr><td><strong>${varNames[i]}</strong></td><td>${mean(col).toFixed(3)}</td><td>${median(col).toFixed(3)}</td><td>${stdDev(col).toFixed(3)}</td><td>${min(col).toFixed(2)}</td><td>${max(col).toFixed(2)}</td></tr>`;
     }
     html += '</table></div>';
-    container.innerHTML = html;
-
-    // Chart
+    c.innerHTML = html;
     drawDeskriptifChart();
 }
 
@@ -812,14 +999,12 @@ function drawDeskriptifChart() {
     const canvas = document.getElementById('deskriptifChart');
     if (!canvas) return;
     if (chartInstances.deskriptif) { chartInstances.deskriptif.destroy(); }
-
     const means = [], stds = [];
     for (let i=0; i<numVariables; i++) {
         const col = dataMatrix.map(r => r[i]);
         means.push(mean(col));
         stds.push(stdDev(col));
     }
-
     const ctx = canvas.getContext('2d');
     chartInstances.deskriptif = new Chart(ctx, {
         type: 'bar',
@@ -830,12 +1015,7 @@ function drawDeskriptifChart() {
                 { label: 'Std Dev', data: stds, backgroundColor: 'rgba(198,40,40,0.6)', borderColor: '#c62828', borderWidth: 2 }
             ]
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { position: 'top' } },
-            scales: { y: { beginAtZero: true } }
-        }
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true } } }
     });
 }
 
@@ -843,43 +1023,27 @@ function drawDeskriptifChart() {
 // 2. VALIDITAS
 // ============================================================
 function updateValiditas() {
-    const container = document.getElementById('validitasContent');
+    const c = document.getElementById('validitasContent');
     const df = numRespondents - 2;
     const rTable = getRTable(df);
-
-    let html = `
-        <div class="stat-box"><span class="label">df = ${df}</span><span class="value">r-tabel (α=0.05) = ${rTable.toFixed(3)}</span></div>
-        <div class="table-scroll"><table>
-        <tr><th>Variabel</th><th>r-hitung</th><th>r-tabel</th><th>Status</th></tr>`;
-
-    let validCount = 0;
+    let html = `<div class="stat-box"><span class="label">df = ${df}</span><span class="value">r-tabel = ${rTable.toFixed(3)}</span></div>
+        <div class="table-scroll"><table><tr><th>Variabel</th><th>r-hitung</th><th>r-tabel</th><th>Status</th></tr>`;
+    let valid = 0;
     for (let i=0; i<numVariables; i++) {
         const col = dataMatrix.map(r => r[i]);
         const totalWithout = dataMatrix.map(r => sum(r) - r[i]);
         const r = pearson(col, totalWithout);
-        const valid = Math.abs(r) >= rTable;
-        if (valid) validCount++;
-        const status = valid ? '✅ Valid' : '❌ Tidak Valid';
-        const color = valid ? 'green' : 'red';
-        html += `<tr>
-            <td><strong>${varNames[i]}</strong></td>
-            <td>${r.toFixed(3)}</td>
-            <td>${rTable.toFixed(3)}</td>
-            <td class="value ${color}">${status}</td>
-        </tr>`;
+        const isVal = Math.abs(r) >= rTable;
+        if (isVal) valid++;
+        const status = isVal ? '✅ Valid' : '❌ Tidak Valid';
+        const color = isVal ? 'green' : 'red';
+        html += `<tr><td><strong>${varNames[i]}</strong></td><td>${r.toFixed(3)}</td><td>${rTable.toFixed(3)}</td><td class="value ${color}">${status}</td></tr>`;
     }
     html += '</table></div>';
-
-    const pct = (validCount/numVariables*100).toFixed(1);
-    html += `<div class="interpretation-box">
-        <h4>Kesimpulan Validitas</h4>
-        <p>${validCount} dari ${numVariables} variabel valid (${pct}%)</p>
-        <p>${validCount === numVariables ? '✅ Semua variabel valid.' :
-            validCount >= numVariables/2 ? '⚠️ Beberapa variabel perlu direvisi.' :
-            '❌ Sebagian besar variabel tidak valid.'}</p>
-    </div>`;
-    container.innerHTML = html;
-
+    const pct = (valid/numVariables*100).toFixed(1);
+    html += `<div class="interpretation-box"><h4>Kesimpulan</h4><p>${valid} dari ${numVariables} variabel valid (${pct}%)</p>
+        <p>${valid === numVariables ? '✅ Semua valid.' : valid >= numVariables/2 ? '⚠️ Beberapa perlu revisi.' : '❌ Sebagian besar tidak valid.'}</p></div>`;
+    c.innerHTML = html;
     drawHeatmap();
 }
 
@@ -887,15 +1051,11 @@ function drawHeatmap() {
     const canvas = document.getElementById('heatmapChart');
     if (!canvas) return;
     if (chartInstances.heatmap) { chartInstances.heatmap.destroy(); }
-
     const maxVars = Math.min(numVariables, 8);
     const labels = varNames.slice(0, maxVars);
-    const data = [];
-    const colors = [];
-
+    const data = [], colors = [];
     for (let i=0; i<maxVars; i++) {
-        const row = [];
-        const colorRow = [];
+        const row = [], colorRow = [];
         const colI = dataMatrix.map(r => r[i]);
         for (let j=0; j<maxVars; j++) {
             const colJ = dataMatrix.map(r => r[j]);
@@ -910,9 +1070,7 @@ function drawHeatmap() {
         data.push(row);
         colors.push(colorRow);
     }
-
     const ctx = canvas.getContext('2d');
-    
     chartInstances.heatmap = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -930,18 +1088,9 @@ function drawHeatmap() {
             maintainAspectRatio: false,
             plugins: {
                 legend: { display: true, position: 'top' },
-                tooltip: {
-                    callbacks: {
-                        label: (ctx) => {
-                            return `r = ${ctx.raw.toFixed(3)}`;
-                        }
-                    }
-                }
+                tooltip: { callbacks: { label: (ctx) => `r = ${ctx.raw.toFixed(3)}` } }
             },
-            scales: {
-                x: { grid: { display: false } },
-                y: { beginAtZero: true, max: 1, grid: { display: false } }
-            }
+            scales: { x: { grid: { display: false } }, y: { beginAtZero: true, max: 1, grid: { display: false } } }
         }
     });
 }
@@ -950,15 +1099,10 @@ function drawHeatmap() {
 // 3. RELIABILITAS
 // ============================================================
 function updateReliabilitas() {
-    const container = document.getElementById('reliabilitasContent');
-    const itemStats = document.getElementById('itemStatsContent');
-
+    const c = document.getElementById('reliabilitasContent');
+    const is = document.getElementById('itemStatsContent');
     const k = numVariables;
-    if (k < 2) {
-        container.innerHTML = '<p style="color:#999;">Minimal 2 variabel untuk uji reliabilitas</p>';
-        return;
-    }
-
+    if (k < 2) { c.innerHTML = '<p style="color:#999;">Minimal 2 variabel</p>'; return; }
     const itemVariances = [];
     for (let i=0; i<k; i++) {
         const col = dataMatrix.map(r => r[i]);
@@ -969,54 +1113,39 @@ function updateReliabilitas() {
     const sumItemVar = sum(itemVariances);
     const alpha = (k / (k-1)) * (1 - (sumItemVar / totalVar));
     const alphaFinal = Math.max(-1, Math.min(1, alpha));
-
     let interpret = '', color = '';
-    if (alphaFinal >= 0.90) { interpret = 'Sangat Tinggi (Excellent)'; color = 'green'; }
-    else if (alphaFinal >= 0.80) { interpret = 'Tinggi (Good)'; color = 'green'; }
-    else if (alphaFinal >= 0.70) { interpret = 'Cukup (Acceptable)'; color = 'green'; }
-    else if (alphaFinal >= 0.60) { interpret = 'Rendah (Questionable)'; color = 'orange'; }
-    else if (alphaFinal >= 0.50) { interpret = 'Sangat Rendah (Poor)'; color = 'red'; }
-    else { interpret = 'Tidak Reliabel (Unacceptable)'; color = 'red'; }
-
-    container.innerHTML = `
+    if (alphaFinal >= 0.90) { interpret = 'Sangat Tinggi'; color = 'green'; }
+    else if (alphaFinal >= 0.80) { interpret = 'Tinggi'; color = 'green'; }
+    else if (alphaFinal >= 0.70) { interpret = 'Cukup'; color = 'green'; }
+    else if (alphaFinal >= 0.60) { interpret = 'Rendah'; color = 'orange'; }
+    else if (alphaFinal >= 0.50) { interpret = 'Sangat Rendah'; color = 'red'; }
+    else { interpret = 'Tidak Reliabel'; color = 'red'; }
+    c.innerHTML = `
         <div class="stat-box"><span class="label">Cronbach's Alpha</span><span class="value ${color}">${alphaFinal.toFixed(4)}</span></div>
         <div class="stat-box"><span class="label">Jumlah Item (k)</span><span class="value">${k}</span></div>
         <div class="stat-box"><span class="label">Total Variance</span><span class="value">${totalVar.toFixed(3)}</span></div>
         <div class="stat-box"><span class="label">Sum Item Variances</span><span class="value">${sumItemVar.toFixed(3)}</span></div>
-        <div class="interpretation-box">
-            <h4>Interpretasi</h4>
-            <p><strong>${interpret}</strong></p>
-            <p>${alphaFinal >= 0.70 ? '✅ Instrumen dinyatakan RELIABEL' : '❌ Instrumen dinyatakan TIDAK RELIABEL'}</p>
-        </div>
+        <div class="interpretation-box"><h4>Interpretasi</h4><p><strong>${interpret}</strong></p>
+        <p>${alphaFinal >= 0.70 ? '✅ RELIABEL' : '❌ TIDAK RELIABEL'}</p></div>
     `;
-
-    // Item Statistics
-    let html = `<div class="table-scroll"><table>
-        <tr><th>Item</th><th>Mean</th><th>Std Dev</th><th>Variance</th></tr>`;
+    let html = `<div class="table-scroll"><table><tr><th>Item</th><th>Mean</th><th>Std Dev</th><th>Variance</th></tr>`;
     for (let i=0; i<k; i++) {
         const col = dataMatrix.map(r => r[i]);
-        html += `<tr>
-            <td><strong>${varNames[i]}</strong></td>
-            <td>${mean(col).toFixed(3)}</td>
-            <td>${stdDev(col).toFixed(3)}</td>
-            <td>${variance(col).toFixed(3)}</td>
-        </tr>`;
+        html += `<tr><td><strong>${varNames[i]}</strong></td><td>${mean(col).toFixed(3)}</td><td>${stdDev(col).toFixed(3)}</td><td>${variance(col).toFixed(3)}</td></tr>`;
     }
     html += '</table></div>';
-    itemStats.innerHTML = html;
+    is.innerHTML = html;
 }
 
 // ============================================================
 // 4. KORELASI
 // ============================================================
 function updateKorelasi() {
-    const container = document.getElementById('korelasiContent');
+    const c = document.getElementById('korelasiContent');
     const maxVars = Math.min(numVariables, 10);
-
     let html = `<div class="table-scroll"><table><tr><th>Variabel</th>`;
     for (let i=0; i<maxVars; i++) html += `<th>${varNames[i]}</th>`;
     html += '</tr>';
-
     for (let i=0; i<maxVars; i++) {
         html += `<tr><td><strong>${varNames[i]}</strong></td>`;
         const colI = dataMatrix.map(r => r[i]);
@@ -1029,16 +1158,14 @@ function updateKorelasi() {
         html += '</tr>';
     }
     html += '</table></div>';
-    container.innerHTML = html;
-
+    c.innerHTML = html;
     updateScatterDropdowns();
 }
 
 function updateScatterDropdowns() {
     const selX = document.getElementById('scatterX');
     const selY = document.getElementById('scatterY');
-    selX.innerHTML = '';
-    selY.innerHTML = '';
+    selX.innerHTML = ''; selY.innerHTML = '';
     varNames.forEach((v, i) => {
         selX.innerHTML += `<option value="${i}">${v}</option>`;
         selY.innerHTML += `<option value="${i}">${v}</option>`;
@@ -1051,14 +1178,11 @@ function updateScatter() {
     const xIdx = parseInt(document.getElementById('scatterX').value);
     const yIdx = parseInt(document.getElementById('scatterY').value);
     if (isNaN(xIdx) || isNaN(yIdx)) return;
-    
     const xData = dataMatrix.map(r => r[xIdx]);
     const yData = dataMatrix.map(r => r[yIdx]);
-
     const canvas = document.getElementById('scatterChart');
     if (!canvas) return;
     if (chartInstances.scatter) { chartInstances.scatter.destroy(); }
-
     const ctx = canvas.getContext('2d');
     chartInstances.scatter = new Chart(ctx, {
         type: 'scatter',
@@ -1077,7 +1201,7 @@ function updateScatter() {
             maintainAspectRatio: false,
             plugins: {
                 legend: { display: true },
-                title: { display: true, text: `Korelasi: r = ${pearson(xData, yData).toFixed(3)}` }
+                title: { display: true, text: `r = ${pearson(xData, yData).toFixed(3)}` }
             },
             scales: {
                 x: { title: { display: true, text: varNames[xIdx] } },
@@ -1093,16 +1217,12 @@ function updateScatter() {
 function updateRegresiDropdowns() {
     const selY = document.getElementById('regresiY');
     const selX = document.getElementById('regresiX');
-    selY.innerHTML = '';
-    selX.innerHTML = '';
+    selY.innerHTML = ''; selX.innerHTML = '';
     varNames.forEach((v, i) => {
         selY.innerHTML += `<option value="${i}">${v}</option>`;
         selX.innerHTML += `<option value="${i}">${v}</option>`;
     });
-    if (varNames.length > 1) {
-        selY.selectedIndex = 0;
-        selX.selectedIndex = 1;
-    }
+    if (varNames.length > 1) { selY.selectedIndex = 0; selX.selectedIndex = 1; }
     setTimeout(calculateRegresi, 200);
 }
 
@@ -1110,44 +1230,31 @@ function calculateRegresi() {
     const yIdx = parseInt(document.getElementById('regresiY').value);
     const xIdx = parseInt(document.getElementById('regresiX').value);
     if (isNaN(yIdx) || isNaN(xIdx)) return;
-    if (yIdx === xIdx) { alert('Pilih variabel yang berbeda!'); return; }
-
+    if (yIdx === xIdx) { alert('Pilih variabel berbeda!'); return; }
     const y = dataMatrix.map(r => r[yIdx]);
     const x = dataMatrix.map(r => r[xIdx]);
-    const n = y.length;
-
-    const meanX = mean(x);
-    const meanY = mean(y);
+    const meanX = mean(x), meanY = mean(y);
     const ss_xy = x.reduce((a, xi, i) => a + (xi - meanX) * (y[i] - meanY), 0);
     const ss_xx = x.reduce((a, xi) => a + Math.pow(xi - meanX, 2), 0);
     const b = ss_xy / ss_xx;
     const a = meanY - b * meanX;
-
     const yPred = x.map(xi => a + b * xi);
     const residuals = y.map((yi, i) => yi - yPred[i]);
     const ss_res = residuals.reduce((a, r) => a + r*r, 0);
     const ss_tot = y.reduce((a, yi) => a + Math.pow(yi - meanY, 2), 0);
     const r2 = 1 - (ss_res / ss_tot);
     const r = Math.sqrt(Math.max(0, r2)) * (b > 0 ? 1 : -1);
-
-    const container = document.getElementById('regresiContent');
-    container.innerHTML = `
-        <div class="stat-box"><span class="label">Persamaan Regresi</span><span class="value">Y = ${a.toFixed(3)} + ${b.toFixed(3)}X</span></div>
-        <div class="stat-box"><span class="label">R-squared (R²)</span><span class="value">${r2.toFixed(4)}</span></div>
-        <div class="stat-box"><span class="label">Korelasi (r)</span><span class="value">${r.toFixed(4)}</span></div>
-        <div class="stat-box"><span class="label">Intercept (a)</span><span class="value">${a.toFixed(3)}</span></div>
-        <div class="stat-box"><span class="label">Slope (b)</span><span class="value">${b.toFixed(3)}</span></div>
-        <div class="interpretation-box">
-            <h4>Interpretasi</h4>
-            <p>${r2 >= 0.8 ? '✅ Model sangat baik (R² > 0.8)' :
-                r2 >= 0.6 ? '⚠️ Model cukup baik (R² > 0.6)' :
-                '❌ Model kurang baik (R² < 0.6)'}</p>
-            <p>${Math.abs(b) > 0.1 ? `Setiap kenaikan 1 unit X meningkatkan Y sebesar ${b.toFixed(2)} unit` :
-                'Pengaruh X terhadap Y sangat kecil'}</p>
-        </div>
+    const c = document.getElementById('regresiContent');
+    c.innerHTML = `
+        <div class="stat-box"><span class="label">Persamaan</span><span class="value">Y = ${a.toFixed(3)} + ${b.toFixed(3)}X</span></div>
+        <div class="stat-box"><span class="label">R²</span><span class="value">${r2.toFixed(4)}</span></div>
+        <div class="stat-box"><span class="label">r</span><span class="value">${r.toFixed(4)}</span></div>
+        <div class="stat-box"><span class="label">Intercept</span><span class="value">${a.toFixed(3)}</span></div>
+        <div class="stat-box"><span class="label">Slope</span><span class="value">${b.toFixed(3)}</span></div>
+        <div class="interpretation-box"><h4>Interpretasi</h4>
+        <p>${r2 >= 0.8 ? '✅ Model sangat baik' : r2 >= 0.6 ? '⚠️ Model cukup baik' : '❌ Model kurang baik'}</p>
+        <p>${Math.abs(b) > 0.1 ? `Setiap 1 unit X naik, Y naik ${b.toFixed(2)} unit` : 'Pengaruh X sangat kecil'}</p></div>
     `;
-
-    // Regresi Plot
     drawRegresiPlot(x, y, a, b, varNames[xIdx], varNames[yIdx]);
 }
 
@@ -1155,46 +1262,22 @@ function drawRegresiPlot(x, y, a, b, xLabel, yLabel) {
     const canvas = document.getElementById('regresiChart');
     if (!canvas) return;
     if (chartInstances.regresi) { chartInstances.regresi.destroy(); }
-
-    const minX = Math.min(...x);
-    const maxX = Math.max(...x);
-    const lineX = [minX, maxX];
-    const lineY = lineX.map(xi => a + b * xi);
-
+    const minX = Math.min(...x), maxX = Math.max(...x);
+    const lineX = [minX, maxX], lineY = lineX.map(xi => a + b * xi);
     const ctx = canvas.getContext('2d');
     chartInstances.regresi = new Chart(ctx, {
         type: 'scatter',
         data: {
             datasets: [
-                {
-                    label: 'Data Aktual',
-                    data: x.map((xi, i) => ({ x: xi, y: y[i] })),
-                    backgroundColor: 'rgba(13,71,161,0.7)',
-                    borderColor: '#0d47a1',
-                    pointRadius: 6
-                },
-                {
-                    label: 'Garis Regresi',
-                    data: lineX.map((xi, i) => ({ x: xi, y: lineY[i] })),
-                    type: 'line',
-                    borderColor: '#c62828',
-                    borderWidth: 3,
-                    fill: false,
-                    pointRadius: 0
-                }
+                { label: 'Data', data: x.map((xi, i) => ({ x: xi, y: y[i] })), backgroundColor: 'rgba(13,71,161,0.7)', borderColor: '#0d47a1', pointRadius: 6 },
+                { label: 'Regresi', data: lineX.map((xi, i) => ({ x: xi, y: lineY[i] })), type: 'line', borderColor: '#c62828', borderWidth: 3, fill: false, pointRadius: 0 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'top' },
-                title: { display: true, text: `Regresi: ${yLabel} = ${a.toFixed(2)} + ${b.toFixed(2)}${xLabel}` }
-            },
-            scales: {
-                x: { title: { display: true, text: xLabel } },
-                y: { title: { display: true, text: yLabel } }
-            }
+            plugins: { legend: { position: 'top' }, title: { display: true, text: `${yLabel} = ${a.toFixed(2)} + ${b.toFixed(2)}${xLabel}` } },
+            scales: { x: { title: { display: true, text: xLabel } }, y: { title: { display: true, text: yLabel } } }
         }
     });
 }
@@ -1213,110 +1296,54 @@ function drawNormalCurve() {
     const canvas = document.getElementById('normalCurveChart');
     if (!canvas) return;
     if (chartInstances.normal) { chartInstances.normal.destroy(); }
-
-    const allData = dataMatrix.flat();
-    const m = mean(allData);
-    const sd = stdDev(allData);
-
-    const minVal = Math.min(...allData);
-    const maxVal = Math.max(...allData);
+    const all = dataMatrix.flat();
+    const m = mean(all), sd = stdDev(all);
+    const minVal = Math.min(...all), maxVal = Math.max(...all);
     const range = maxVal - minVal || 1;
     const padding = range * 0.3 || 1;
-    const start = minVal - padding;
-    const end = maxVal + padding;
+    const start = minVal - padding, end = maxVal + padding;
     const step = (end - start) / 200;
-
     const xVals = [], yVals = [];
     for (let x = start; x <= end; x += step) {
         xVals.push(x);
-        const exp = -Math.pow(x-m, 2) / (2 * sd * sd);
-        yVals.push((1 / (sd * Math.sqrt(2 * Math.PI))) * Math.exp(exp));
+        yVals.push((1 / (sd * Math.sqrt(2 * Math.PI))) * Math.exp(-Math.pow(x-m, 2) / (2 * sd * sd)));
     }
-
     const ctx = canvas.getContext('2d');
     chartInstances.normal = new Chart(ctx, {
         type: 'line',
-        data: {
-            labels: xVals.map(x => x.toFixed(1)),
-            datasets: [{
-                label: 'Kurva Normal',
-                data: yVals,
-                borderColor: '#c62828',
-                backgroundColor: 'rgba(198,40,40,0.1)',
-                borderWidth: 3,
-                fill: true,
-                tension: 0.4,
-                pointRadius: 0
-            }]
-        },
+        data: { labels: xVals.map(x => x.toFixed(1)), datasets: [{ label: 'Kurva Normal', data: yVals, borderColor: '#c62828', backgroundColor: 'rgba(198,40,40,0.1)', borderWidth: 3, fill: true, tension: 0.4, pointRadius: 0 }] },
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: true },
-                title: { display: true, text: `Kurva Normal (Mean=${m.toFixed(2)}, SD=${sd.toFixed(2)})` }
-            },
-            scales: {
-                x: { title: { display: true, text: 'Nilai' } },
-                y: { title: { display: true, text: 'Density' } }
-            }
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: true }, title: { display: true, text: `Normal (Mean=${m.toFixed(2)}, SD=${sd.toFixed(2)})` } },
+            scales: { x: { title: { display: true, text: 'Nilai' } }, y: { title: { display: true, text: 'Density' } } }
         }
     });
-
-    document.getElementById('normalCurveInfo').innerHTML = `
-        <strong>Statistik:</strong> Mean = ${m.toFixed(3)}, SD = ${sd.toFixed(3)}
-    `;
+    document.getElementById('normalCurveInfo').innerHTML = `<strong>Mean:</strong> ${m.toFixed(3)} | <strong>SD:</strong> ${sd.toFixed(3)}`;
 }
 
 function drawDistribusi() {
     const canvas = document.getElementById('distribusiChart');
     if (!canvas) return;
     if (chartInstances.distribusi) { chartInstances.distribusi.destroy(); }
-
-    const allData = dataMatrix.flat();
-    const bins = Math.min(Math.ceil(Math.sqrt(allData.length)), 15);
-    const minVal = Math.min(...allData);
-    const maxVal = Math.max(...allData);
+    const all = dataMatrix.flat();
+    const bins = Math.min(Math.ceil(Math.sqrt(all.length)), 15);
+    const minVal = Math.min(...all), maxVal = Math.max(...all);
     const binWidth = (maxVal - minVal) / bins || 1;
-
     const hist = new Array(bins).fill(0);
-    allData.forEach(v => {
-        const idx = Math.min(Math.floor((v - minVal) / binWidth), bins-1);
-        if (idx >= 0) hist[idx]++;
-    });
-
+    all.forEach(v => { const idx = Math.min(Math.floor((v - minVal) / binWidth), bins-1); if (idx >= 0) hist[idx]++; });
     const labels = [];
     for (let i=0; i<bins; i++) {
-        const lower = minVal + i * binWidth;
-        const upper = minVal + (i+1) * binWidth;
+        const lower = minVal + i * binWidth, upper = minVal + (i+1) * binWidth;
         labels.push(`${lower.toFixed(1)}-${upper.toFixed(1)}`);
     }
-
     const ctx = canvas.getContext('2d');
     chartInstances.distribusi = new Chart(ctx, {
         type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Frekuensi',
-                data: hist,
-                backgroundColor: 'rgba(106,27,154,0.7)',
-                borderColor: '#6a1b9a',
-                borderWidth: 2,
-                borderRadius: 4
-            }]
-        },
+        data: { labels: labels, datasets: [{ label: 'Frekuensi', data: hist, backgroundColor: 'rgba(106,27,154,0.7)', borderColor: '#6a1b9a', borderWidth: 2, borderRadius: 4 }] },
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: true },
-                title: { display: true, text: 'Histogram Distribusi Data' }
-            },
-            scales: {
-                y: { beginAtZero: true, title: { display: true, text: 'Frekuensi' } },
-                x: { title: { display: true, text: 'Interval Nilai' } }
-            }
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: true }, title: { display: true, text: 'Histogram' } },
+            scales: { y: { beginAtZero: true, title: { display: true, text: 'Frekuensi' } }, x: { title: { display: true, text: 'Interval' } } }
         }
     });
 }
@@ -1325,38 +1352,18 @@ function drawRespondenCurve() {
     const canvas = document.getElementById('respondenChart');
     if (!canvas) return;
     if (chartInstances.responden) { chartInstances.responden.destroy(); }
-
-    const totalScores = dataMatrix.map(r => sum(r));
-    const sorted = [...totalScores].sort((a,b) => a-b);
-
+    const scores = dataMatrix.map(r => sum(r)).sort((a,b) => a-b);
     const ctx = canvas.getContext('2d');
     chartInstances.responden = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: Array.from({length: sorted.length}, (_, i) => `R${i+1}`),
-            datasets: [{
-                label: 'Skor Total',
-                data: sorted,
-                borderColor: '#0d47a1',
-                backgroundColor: 'rgba(13,71,161,0.1)',
-                borderWidth: 3,
-                fill: true,
-                tension: 0.4,
-                pointBackgroundColor: '#0d47a1',
-                pointRadius: 4
-            }]
+            labels: Array.from({length: scores.length}, (_, i) => `R${i+1}`),
+            datasets: [{ label: 'Skor Total', data: scores, borderColor: '#0d47a1', backgroundColor: 'rgba(13,71,161,0.1)', borderWidth: 3, fill: true, tension: 0.4, pointBackgroundColor: '#0d47a1', pointRadius: 4 }]
         },
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: true },
-                title: { display: true, text: 'Skor Total per Responden (Terurut)' }
-            },
-            scales: {
-                y: { beginAtZero: true, title: { display: true, text: 'Skor Total' } },
-                x: { title: { display: true, text: 'Responden' } }
-            }
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: true }, title: { display: true, text: 'Skor Total per Responden' } },
+            scales: { y: { beginAtZero: true, title: { display: true, text: 'Skor' } }, x: { title: { display: true, text: 'Responden' } } }
         }
     });
 }
@@ -1365,38 +1372,22 @@ function drawRadar() {
     const canvas = document.getElementById('radarChart');
     if (!canvas) return;
     if (chartInstances.radar) { chartInstances.radar.destroy(); }
-
     const means = [];
     for (let i=0; i<numVariables; i++) {
         const col = dataMatrix.map(r => r[i]);
         means.push(mean(col));
     }
-
     const ctx = canvas.getContext('2d');
     chartInstances.radar = new Chart(ctx, {
         type: 'radar',
         data: {
             labels: varNames,
-            datasets: [{
-                label: 'Rata-rata per Item',
-                data: means,
-                backgroundColor: 'rgba(13,71,161,0.2)',
-                borderColor: '#0d47a1',
-                borderWidth: 3,
-                pointBackgroundColor: '#0d47a1',
-                pointRadius: 5
-            }]
+            datasets: [{ label: 'Rata-rata', data: means, backgroundColor: 'rgba(13,71,161,0.2)', borderColor: '#0d47a1', borderWidth: 3, pointBackgroundColor: '#0d47a1', pointRadius: 5 }]
         },
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: true },
-                title: { display: true, text: 'Profil Item (Radar Chart)' }
-            },
-            scales: {
-                r: { beginAtZero: true, max: Math.max(...means) * 1.2 || 5 }
-            }
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: true }, title: { display: true, text: 'Profil Item' } },
+            scales: { r: { beginAtZero: true, max: Math.max(...means) * 1.2 || 5 } }
         }
     });
 }
@@ -1406,9 +1397,9 @@ function drawRadar() {
 // ============================================================
 function refreshCharts() {
     if (dataMatrix.length === 0) return;
-    const activeTab = document.querySelector('.tab-content.active');
-    if (!activeTab) return;
-    const id = activeTab.id;
+    const active = document.querySelector('.tab-content.active');
+    if (!active) return;
+    const id = active.id;
     if (id === 'tabDeskriptif') drawDeskriptifChart();
     else if (id === 'tabValiditas') drawHeatmap();
     else if (id === 'tabKorelasi') updateScatter();
@@ -1421,57 +1412,156 @@ function refreshCharts() {
 }
 
 // ============================================================
-// LOAD SAMPLE DATA
+// EXPORT
+// ============================================================
+function exportToExcel(type) {
+    if (dataMatrix.length === 0) { showToast('❌ Tidak ada data!', true); return; }
+    const wb = XLSX.utils.book_new();
+    const ts = new Date().toLocaleString('id-ID');
+    try {
+        if (type === 'all') exportAll(wb, ts);
+        else if (type === 'data') exportData(wb, ts);
+        else if (type === 'deskriptif') exportDesk(wb, ts);
+        else if (type === 'validitas') exportValid(wb, ts);
+        else if (type === 'reliabilitas') exportReli(wb, ts);
+        else if (type === 'korelasi') exportKorel(wb, ts);
+        else if (type === 'regresi') exportRegresi(wb, ts);
+        else { showToast('❌ Tipe tidak dikenal!', true); return; }
+        XLSX.writeFile(wb, 'SPSS_Web_Export.xlsx');
+        showToast('✅ Export berhasil!');
+        document.getElementById('exportPreview').innerHTML = `<div style="background:#e8eaf6; padding:20px; border-radius:8px; text-align:center;">
+            <div style="font-size:48px;">📊</div>
+            <h3 style="color:#1a237e;">Export ${type}</h3>
+            <p style="color:#555;">✅ File: SPSS_Web_Export.xlsx</p>
+        </div>`;
+    } catch(e) { showToast('❌ Gagal: ' + e.message, true); }
+}
+
+function exportAll(wb, ts) {
+    const meta = [['SPSS Web Export'], ['Tanggal:', ts], ['N:', numRespondents], ['Variabel:', numVariables], ['Nama:', varNames.join(', ')], ['', ''], ['Instagram:@rezalameka']];
+    const wsMeta = XLSX.utils.aoa_to_sheet(meta);
+    XLSX.utils.book_append_sheet(wb, wsMeta, 'Metadata');
+    exportData(wb, ts);
+    exportDesk(wb, ts);
+    exportValid(wb, ts);
+    exportReli(wb, ts);
+    exportKorel(wb, ts);
+    exportRegresi(wb, ts);
+}
+
+function exportData(wb, ts) {
+    const rows = [['Responden', ...varNames, 'Total']];
+    dataMatrix.forEach((row, i) => rows.push([`R${i+1}`, ...row, sum(row).toFixed(1)]));
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    XLSX.utils.book_append_sheet(wb, ws, 'Data');
+}
+
+function exportDesk(wb, ts) {
+    const all = dataMatrix.flat();
+    const data = [['DESKRIPTIF'], ['Statistik', 'Nilai'], ['N', numRespondents], ['Variabel', numVariables],
+        ['Mean', mean(all).toFixed(3)], ['Median', median(all).toFixed(3)], ['Std Dev', stdDev(all).toFixed(3)],
+        ['Varians', variance(all).toFixed(3)], ['Min', min(all).toFixed(2)], ['Max', max(all).toFixed(2)],
+        [], ['Per Variabel'], ['Variabel', 'Mean', 'Median', 'Std Dev', 'Min', 'Max']];
+    for (let i=0; i<numVariables; i++) {
+        const col = dataMatrix.map(r => r[i]);
+        data.push([varNames[i], mean(col).toFixed(3), median(col).toFixed(3), stdDev(col).toFixed(3), min(col).toFixed(2), max(col).toFixed(2)]);
+    }
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    XLSX.utils.book_append_sheet(wb, ws, 'Deskriptif');
+}
+
+function exportValid(wb, ts) {
+    const df = numRespondents - 2, rT = getRTable(df);
+    const data = [['VALIDITAS'], ['df', df], ['r-tabel', rT.toFixed(3)], [], ['Variabel', 'r-hitung', 'r-tabel', 'Status']];
+    let v = 0;
+    for (let i=0; i<numVariables; i++) {
+        const col = dataMatrix.map(r => r[i]);
+        const totalWithout = dataMatrix.map(r => sum(r) - r[i]);
+        const r = pearson(col, totalWithout);
+        const valid = Math.abs(r) >= rT;
+        if (valid) v++;
+        data.push([varNames[i], r.toFixed(3), rT.toFixed(3), valid ? 'Valid' : 'Tidak Valid']);
+    }
+    data.push([], ['Kesimpulan:', `${v}/${numVariables} valid (${(v/numVariables*100).toFixed(1)}%)`]);
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    XLSX.utils.book_append_sheet(wb, ws, 'Validitas');
+}
+
+function exportReli(wb, ts) {
+    const k = numVariables;
+    const itemVars = [];
+    for (let i=0; i<k; i++) {
+        const col = dataMatrix.map(r => r[i]);
+        itemVars.push(variance(col));
+    }
+    const totalScores = dataMatrix.map(r => sum(r));
+    const totalVar = variance(totalScores);
+    const sumItemVar = sum(itemVars);
+    const alpha = (k / (k-1)) * (1 - (sumItemVar / totalVar));
+    const alphaFinal = Math.max(-1, Math.min(1, alpha));
+    const data = [['RELIABILITAS'], ['Cronbach Alpha', alphaFinal.toFixed(4)], ['k', k], ['Total Var', totalVar.toFixed(3)], ['Sum Item Var', sumItemVar.toFixed(3)], [], ['Item Statistics'], ['Item', 'Mean', 'Std Dev', 'Variance']];
+    for (let i=0; i<k; i++) {
+        const col = dataMatrix.map(r => r[i]);
+        data.push([varNames[i], mean(col).toFixed(3), stdDev(col).toFixed(3), variance(col).toFixed(3)]);
+    }
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    XLSX.utils.book_append_sheet(wb, ws, 'Reliabilitas');
+}
+
+function exportKorel(wb, ts) {
+    const maxVars = Math.min(numVariables, 10);
+    const data = [['KORELASI']];
+    const header = ['Variabel'];
+    for (let i=0; i<maxVars; i++) header.push(varNames[i]);
+    data.push(header);
+    for (let i=0; i<maxVars; i++) {
+        const row = [varNames[i]];
+        const colI = dataMatrix.map(r => r[i]);
+        for (let j=0; j<maxVars; j++) {
+            const colJ = dataMatrix.map(r => r[j]);
+            row.push(pearson(colI, colJ).toFixed(3));
+        }
+        data.push(row);
+    }
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    XLSX.utils.book_append_sheet(wb, ws, 'Korelasi');
+}
+
+function exportRegresi(wb, ts) {
+    if (numVariables < 2) return;
+    const y = dataMatrix.map(r => r[0]), x = dataMatrix.map(r => r[1]);
+    const meanX = mean(x), meanY = mean(y);
+    const ss_xy = x.reduce((a, xi, i) => a + (xi - meanX) * (y[i] - meanY), 0);
+    const ss_xx = x.reduce((a, xi) => a + Math.pow(xi - meanX, 2), 0);
+    const b = ss_xy / ss_xx, a = meanY - b * meanX;
+    const yPred = x.map(xi => a + b * xi);
+    const res = y.map((yi, i) => yi - yPred[i]);
+    const ss_res = res.reduce((a, r) => a + r*r, 0), ss_tot = y.reduce((a, yi) => a + Math.pow(yi - meanY, 2), 0);
+    const r2 = 1 - (ss_res / ss_tot), r = Math.sqrt(Math.max(0, r2)) * (b > 0 ? 1 : -1);
+    const data = [['REGRESI'], ['Y', varNames[0]], ['X', varNames[1]], [], ['Persamaan', `Y = ${a.toFixed(3)} + ${b.toFixed(3)}X`],
+        ['R²', r2.toFixed(4)], ['r', r.toFixed(4)], ['Intercept', a.toFixed(3)], ['Slope', b.toFixed(3)], [], ['Data', 'X', 'Y', 'Y Pred', 'Residual']];
+    for (let i=0; i<x.length; i++) data.push([i+1, x[i].toFixed(2), y[i].toFixed(2), yPred[i].toFixed(2), res[i].toFixed(2)]);
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    XLSX.utils.book_append_sheet(wb, ws, 'Regresi');
+}
+
+// ============================================================
+// SAMPLE DATA
 // ============================================================
 function loadSampleValid() {
-    const data = [
-        [5,5,4,5,5],
-        [4,4,5,4,4],
-        [5,5,5,5,4],
-        [4,4,4,4,5],
-        [5,5,5,5,5],
-        [4,5,4,4,4],
-        [5,4,5,5,5],
-        [4,4,4,4,4],
-        [5,5,5,5,5],
-        [4,5,4,5,4]
-    ];
+    const data = [[5,5,4,5,5],[4,4,5,4,4],[5,5,5,5,4],[4,4,4,4,5],[5,5,5,5,5],[4,5,4,4,4],[5,4,5,5,5],[4,4,4,4,4],[5,5,5,5,5],[4,5,4,5,4]];
     document.getElementById('dataText').value = data.map(r => r.join(' ')).join('\n');
     document.getElementById('varNames').value = 'Item1, Item2, Item3, Item4, Item5';
     processData();
 }
-
 function loadSamplePartial() {
-    const data = [
-        [5,3,4,5,2],
-        [4,5,5,4,3],
-        [5,2,5,5,5],
-        [4,4,2,4,4],
-        [5,3,5,3,5],
-        [3,5,4,5,2],
-        [5,2,5,4,5],
-        [4,4,3,5,3],
-        [2,5,4,4,5],
-        [5,3,5,5,4]
-    ];
+    const data = [[5,3,4,5,2],[4,5,5,4,3],[5,2,5,5,5],[4,4,2,4,4],[5,3,5,3,5],[3,5,4,5,2],[5,2,5,4,5],[4,4,3,5,3],[2,5,4,4,5],[5,3,5,5,4]];
     document.getElementById('dataText').value = data.map(r => r.join(' ')).join('\n');
     document.getElementById('varNames').value = 'Item1, Item2, Item3, Item4, Item5';
     processData();
 }
-
 function loadSampleInvalid() {
-    const data = [
-        [5,1,5,1,5],
-        [1,5,1,5,1],
-        [5,1,5,1,5],
-        [1,5,1,5,1],
-        [5,1,5,1,5],
-        [1,5,1,5,1],
-        [5,1,5,1,5],
-        [1,5,1,5,1],
-        [5,1,5,1,5],
-        [1,5,1,5,1]
-    ];
+    const data = [[5,1,5,1,5],[1,5,1,5,1],[5,1,5,1,5],[1,5,1,5,1],[5,1,5,1,5],[1,5,1,5,1],[5,1,5,1,5],[1,5,1,5,1],[5,1,5,1,5],[1,5,1,5,1]];
     document.getElementById('dataText').value = data.map(r => r.join(' ')).join('\n');
     document.getElementById('varNames').value = 'Item1, Item2, Item3, Item4, Item5';
     processData();
