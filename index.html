@@ -7,19 +7,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* ===== ALL STYLES SAMA SEPERTI SEBELUMNYA ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f0f2f5;
             min-height: 100vh;
             position: relative;
         }
-
         body::before {
             content: "Instagram:@rezalameka";
             position: fixed;
@@ -35,7 +30,6 @@
             white-space: nowrap;
             font-family: 'Arial Black', sans-serif;
         }
-
         .card {
             background: white;
             border-radius: 12px;
@@ -46,7 +40,6 @@
             overflow: hidden;
             z-index: 1;
         }
-
         .card::after {
             content: "Instagram:@rezalameka";
             position: absolute;
@@ -60,7 +53,6 @@
             letter-spacing: 3px;
             font-family: 'Arial', sans-serif;
         }
-
         .header {
             background: linear-gradient(135deg, #1a237e, #0d47a1);
             color: white;
@@ -76,7 +68,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .header::after {
             content: "Instagram:@rezalameka";
             position: absolute;
@@ -88,35 +79,10 @@
             letter-spacing: 5px;
             color: white;
         }
-
-        .header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
-        }
-        .header h1 small {
-            font-size: 14px;
-            font-weight: 300;
-            opacity: 0.8;
-            margin-left: 10px;
-        }
-        .header .status {
-            background: rgba(255,255,255,0.15);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 13px;
-            position: relative;
-            z-index: 1;
-        }
-        .header .subtitle {
-            font-size: 13px;
-            opacity: 0.9;
-            margin-top: 5px;
-            position: relative;
-            z-index: 1;
-        }
-
+        .header h1 { font-size: 28px; font-weight: 700; position: relative; z-index: 1; }
+        .header h1 small { font-size: 14px; font-weight: 300; opacity: 0.8; margin-left: 10px; }
+        .header .status { background: rgba(255,255,255,0.15); padding: 8px 20px; border-radius: 20px; font-size: 13px; position: relative; z-index: 1; }
+        .header .subtitle { font-size: 13px; opacity: 0.9; margin-top: 5px; position: relative; z-index: 1; }
         .nav-tabs {
             display: flex;
             gap: 5px;
@@ -129,7 +95,6 @@
             position: relative;
             z-index: 1;
         }
-
         .nav-tab {
             padding: 10px 20px;
             border: none;
@@ -141,32 +106,12 @@
             color: #555;
             transition: all 0.3s;
         }
-        .nav-tab:hover {
-            background: #e3f2fd;
-            color: #0d47a1;
-        }
-        .nav-tab.active {
-            background: #0d47a1;
-            color: white;
-        }
-        .nav-tab .icon {
-            margin-right: 8px;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        .grid-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 20px;
-        }
-        .full-width {
-            grid-column: 1 / -1;
-        }
-
+        .nav-tab:hover { background: #e3f2fd; color: #0d47a1; }
+        .nav-tab.active { background: #0d47a1; color: white; }
+        .nav-tab .icon { margin-right: 8px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .full-width { grid-column: 1 / -1; }
         .card-title {
             font-size: 16px;
             font-weight: 700;
@@ -179,7 +124,6 @@
             gap: 10px;
             position: relative;
         }
-
         .card-title::after {
             content: "RA";
             position: absolute;
@@ -191,18 +135,8 @@
             color: rgba(26, 35, 126, 0.1);
             letter-spacing: 2px;
         }
-
-        .input-group {
-            margin-bottom: 12px;
-        }
-        .input-group label {
-            display: block;
-            font-weight: 600;
-            font-size: 13px;
-            color: #333;
-            margin-bottom: 4px;
-        }
-
+        .input-group { margin-bottom: 12px; }
+        .input-group label { display: block; font-weight: 600; font-size: 13px; color: #333; margin-bottom: 4px; }
         .form-control {
             width: 100%;
             padding: 10px 12px;
@@ -212,18 +146,8 @@
             font-family: 'Courier New', monospace;
             transition: all 0.3s;
         }
-        .form-control:focus {
-            border-color: #0d47a1;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(13,71,161,0.1);
-        }
-        textarea.form-control {
-            resize: vertical;
-            min-height: 80px;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-        }
-
+        .form-control:focus { border-color: #0d47a1; outline: none; box-shadow: 0 0 0 3px rgba(13,71,161,0.1); }
+        textarea.form-control { resize: vertical; min-height: 80px; font-family: 'Courier New', monospace; font-size: 13px; }
         .btn {
             padding: 10px 24px;
             border: none;
@@ -236,10 +160,7 @@
             align-items: center;
             gap: 8px;
         }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
         .btn-primary { background: #0d47a1; color: white; }
         .btn-primary:hover { background: #1565c0; }
         .btn-success { background: #2e7d32; color: white; }
@@ -257,23 +178,9 @@
         .btn-import { background: #e67e22; color: white; }
         .btn-import:hover { background: #d35400; }
         .btn-sm { padding: 6px 14px; font-size: 12px; }
-
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .table-wrap {
-            overflow-x: auto;
-            margin-top: 10px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .table-wrap { overflow-x: auto; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
         table th {
             background: #1a237e;
             color: white;
@@ -294,18 +201,9 @@
             letter-spacing: 2px;
             color: white;
         }
-        table td {
-            padding: 8px 12px;
-            text-align: center;
-            border-bottom: 1px solid #e8eaf6;
-        }
-        table tr:hover td {
-            background: #f5f5f5;
-        }
-        table tr:nth-child(even) td {
-            background: #fafafa;
-        }
-
+        table td { padding: 8px 12px; text-align: center; border-bottom: 1px solid #e8eaf6; }
+        table tr:hover td { background: #f5f5f5; }
+        table tr:nth-child(even) td { background: #fafafa; }
         .stat-box {
             background: #f8f9fa;
             border-radius: 8px;
@@ -328,26 +226,12 @@
             color: rgba(26, 35, 126, 0.08);
             font-family: 'Arial', sans-serif;
         }
-        .stat-box .label {
-            font-weight: 600;
-            color: #555;
-            font-size: 13px;
-        }
-        .stat-box .value {
-            font-family: 'Courier New', monospace;
-            font-weight: 700;
-            font-size: 15px;
-            color: #1a237e;
-        }
+        .stat-box .label { font-weight: 600; color: #555; font-size: 13px; }
+        .stat-box .value { font-family: 'Courier New', monospace; font-weight: 700; font-size: 15px; color: #1a237e; }
         .stat-box .value.green { color: #2e7d32; }
         .stat-box .value.red { color: #c62828; }
         .stat-box .value.orange { color: #e65100; }
-
-        .chart-container {
-            position: relative;
-            height: 300px;
-            width: 100%;
-        }
+        .chart-container { position: relative; height: 300px; width: 100%; }
         .chart-container::after {
             content: "Instagram:@rezalameka";
             position: absolute;
@@ -360,7 +244,6 @@
             pointer-events: none;
             font-family: 'Arial', sans-serif;
         }
-
         .interpretation-box {
             background: #e8eaf6;
             padding: 15px 20px;
@@ -380,28 +263,11 @@
             color: rgba(26, 35, 126, 0.06);
             letter-spacing: 2px;
         }
-        .interpretation-box h4 {
-            color: #1a237e;
-            margin-bottom: 8px;
-        }
-        .interpretation-box p {
-            font-size: 14px;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-
-        .table-scroll {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
+        .interpretation-box h4 { color: #1a237e; margin-bottom: 8px; }
+        .interpretation-box p { font-size: 14px; color: #333; line-height: 1.6; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .table-scroll { max-height: 400px; overflow-y: auto; }
         .footer {
             text-align: center;
             padding: 20px;
@@ -411,15 +277,7 @@
             border-top: 1px solid #e0e0e0;
             position: relative;
         }
-        .footer .watermark {
-            font-size: 16px;
-            font-weight: 700;
-            color: #1a237e;
-            letter-spacing: 3px;
-            margin-top: 5px;
-            opacity: 0.6;
-        }
-
+        .footer .watermark { font-size: 16px; font-weight: 700; color: #1a237e; letter-spacing: 3px; margin-top: 5px; opacity: 0.6; }
         .file-upload {
             border: 3px dashed #e0e0e0;
             border-radius: 12px;
@@ -429,32 +287,12 @@
             transition: all 0.3s;
             background: #fafafa;
         }
-        .file-upload:hover {
-            border-color: #0d47a1;
-            background: #f0f4ff;
-        }
-        .file-upload.dragover {
-            border-color: #2e7d32;
-            background: #e8f5e9;
-        }
-        .file-upload .icon {
-            font-size: 48px;
-            display: block;
-            margin-bottom: 10px;
-        }
-        .file-upload p {
-            color: #666;
-            font-size: 14px;
-        }
-        .file-upload .hint {
-            font-size: 12px;
-            color: #999;
-            margin-top: 5px;
-        }
-        .file-upload input[type="file"] {
-            display: none;
-        }
-
+        .file-upload:hover { border-color: #0d47a1; background: #f0f4ff; }
+        .file-upload.dragover { border-color: #2e7d32; background: #e8f5e9; }
+        .file-upload .icon { font-size: 48px; display: block; margin-bottom: 10px; }
+        .file-upload p { color: #666; font-size: 14px; }
+        .file-upload .hint { font-size: 12px; color: #999; margin-top: 5px; }
+        .file-upload input[type="file"] { display: none; }
         .toast {
             position: fixed;
             bottom: 30px;
@@ -470,32 +308,16 @@
             transition: all 0.5s;
             font-weight: 600;
         }
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        .toast.error {
-            background: #c62828;
-        }
-
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.error { background: #c62828; }
         @media (max-width: 768px) {
-            .grid-2, .grid-3 {
-                grid-template-columns: 1fr;
-            }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
             .header h1 { font-size: 20px; }
             .header h1 small { display: block; margin-left: 0; }
             .nav-tab { padding: 8px 12px; font-size: 12px; }
-            body::before {
-                font-size: 60px;
-                letter-spacing: 10px;
-            }
-            .card::after {
-                font-size: 12px;
-            }
-            .btn-group .btn {
-                flex: 1;
-                justify-content: center;
-            }
+            body::before { font-size: 60px; letter-spacing: 10px; }
+            .card::after { font-size: 12px; }
+            .btn-group .btn { flex: 1; justify-content: center; }
         }
     </style>
 </head>
@@ -715,13 +537,16 @@
                     Ekspor semua data dan hasil analisis ke file Excel (.xlsx)
                 </p>
                 <div style="display:flex; flex-direction:column; gap:10px;">
-                    <button class="btn btn-excel" onclick="exportToExcel('all')">📊 Export Semua</button>
+                    <button class="btn btn-excel" onclick="exportToExcel('all')">📊 Export Semua (1 File)</button>
                     <button class="btn btn-success" onclick="exportToExcel('data')">📋 Export Data</button>
                     <button class="btn btn-primary" onclick="exportToExcel('deskriptif')">📈 Export Deskriptif</button>
                     <button class="btn btn-purple" onclick="exportToExcel('validitas')">✅ Export Validitas</button>
                     <button class="btn btn-warning" onclick="exportToExcel('reliabilitas')">🔄 Export Reliabilitas</button>
                     <button class="btn btn-danger" onclick="exportToExcel('korelasi')">🔗 Export Korelasi</button>
                     <button class="btn btn-teal" onclick="exportToExcel('regresi')">📈 Export Regresi</button>
+                </div>
+                <div style="margin-top:15px; padding:10px; background:#e8eaf6; border-radius:8px; font-size:13px; color:#555;">
+                    💡 <strong>Export Semua:</strong> Satu file Excel dengan 7 sheet (Data, Deskriptif, Validitas, Reliabilitas, Korelasi, Regresi, Metadata)
                 </div>
             </div>
             <div class="card">
@@ -1412,137 +1237,283 @@ function refreshCharts() {
 }
 
 // ============================================================
-// EXPORT
+// EXPORT (DIPERBAIKI)
 // ============================================================
 function exportToExcel(type) {
     if (dataMatrix.length === 0) { showToast('❌ Tidak ada data!', true); return; }
     const wb = XLSX.utils.book_new();
     const ts = new Date().toLocaleString('id-ID');
     try {
-        if (type === 'all') exportAll(wb, ts);
-        else if (type === 'data') exportData(wb, ts);
-        else if (type === 'deskriptif') exportDesk(wb, ts);
-        else if (type === 'validitas') exportValid(wb, ts);
-        else if (type === 'reliabilitas') exportReli(wb, ts);
-        else if (type === 'korelasi') exportKorel(wb, ts);
-        else if (type === 'regresi') exportRegresi(wb, ts);
-        else { showToast('❌ Tipe tidak dikenal!', true); return; }
+        if (type === 'all') {
+            // EXPORT SEMUA DALAM 1 FILE MULTIPLE SHEETS
+            // Sheet 1: Data
+            const dataRows = [['Responden', ...varNames, 'Total']];
+            dataMatrix.forEach((row, i) => {
+                dataRows.push([`R${i+1}`, ...row, sum(row).toFixed(1)]);
+            });
+            const wsData = XLSX.utils.aoa_to_sheet(dataRows);
+            XLSX.utils.book_append_sheet(wb, wsData, 'Data');
+            
+            // Sheet 2: Deskriptif
+            const all = dataMatrix.flat();
+            const deskData = [
+                ['STATISTIK DESKRIPTIF'],
+                ['Statistik', 'Nilai'],
+                ['Responden (N)', numRespondents],
+                ['Variabel', numVariables],
+                ['Mean', mean(all).toFixed(3)],
+                ['Median', median(all).toFixed(3)],
+                ['Std Dev', stdDev(all).toFixed(3)],
+                ['Varians', variance(all).toFixed(3)],
+                ['Min', min(all).toFixed(2)],
+                ['Max', max(all).toFixed(2)],
+                [], ['PER VARIABEL'],
+                ['Variabel', 'Mean', 'Median', 'Std Dev', 'Min', 'Max']
+            ];
+            for (let i=0; i<numVariables; i++) {
+                const col = dataMatrix.map(r => r[i]);
+                deskData.push([varNames[i], mean(col).toFixed(3), median(col).toFixed(3), stdDev(col).toFixed(3), min(col).toFixed(2), max(col).toFixed(2)]);
+            }
+            const wsDesk = XLSX.utils.aoa_to_sheet(deskData);
+            XLSX.utils.book_append_sheet(wb, wsDesk, 'Deskriptif');
+            
+            // Sheet 3: Validitas
+            const df = numRespondents - 2;
+            const rT = getRTable(df);
+            const validData = [
+                ['UJI VALIDITAS'],
+                ['df', df],
+                ['r-tabel (α=0.05)', rT.toFixed(3)],
+                [],
+                ['Variabel', 'r-hitung', 'r-tabel', 'Status']
+            ];
+            let vCount = 0;
+            for (let i=0; i<numVariables; i++) {
+                const col = dataMatrix.map(r => r[i]);
+                const totalWithout = dataMatrix.map(r => sum(r) - r[i]);
+                const r = pearson(col, totalWithout);
+                const valid = Math.abs(r) >= rT;
+                if (valid) vCount++;
+                validData.push([varNames[i], r.toFixed(3), rT.toFixed(3), valid ? 'Valid' : 'Tidak Valid']);
+            }
+            validData.push([], ['Kesimpulan:', `${vCount}/${numVariables} valid (${(vCount/numVariables*100).toFixed(1)}%)`]);
+            const wsValid = XLSX.utils.aoa_to_sheet(validData);
+            XLSX.utils.book_append_sheet(wb, wsValid, 'Validitas');
+            
+            // Sheet 4: Reliabilitas
+            const k = numVariables;
+            const itemVars = [];
+            for (let i=0; i<k; i++) {
+                const col = dataMatrix.map(r => r[i]);
+                itemVars.push(variance(col));
+            }
+            const totalScores = dataMatrix.map(r => sum(r));
+            const totalVar = variance(totalScores);
+            const sumItemVar = sum(itemVars);
+            const alpha = (k / (k-1)) * (1 - (sumItemVar / totalVar));
+            const alphaFinal = Math.max(-1, Math.min(1, alpha));
+            const relData = [
+                ['UJI RELIABILITAS (Cronbach\'s Alpha)'],
+                ['Cronbach\'s Alpha', alphaFinal.toFixed(4)],
+                ['Jumlah Item (k)', k],
+                ['Total Variance', totalVar.toFixed(3)],
+                ['Sum Item Variances', sumItemVar.toFixed(3)],
+                [], ['ITEM STATISTICS'],
+                ['Item', 'Mean', 'Std Dev', 'Variance']
+            ];
+            for (let i=0; i<k; i++) {
+                const col = dataMatrix.map(r => r[i]);
+                relData.push([varNames[i], mean(col).toFixed(3), stdDev(col).toFixed(3), variance(col).toFixed(3)]);
+            }
+            const wsRel = XLSX.utils.aoa_to_sheet(relData);
+            XLSX.utils.book_append_sheet(wb, wsRel, 'Reliabilitas');
+            
+            // Sheet 5: Korelasi
+            const maxVars = Math.min(numVariables, 10);
+            const corrData = [['MATRIKS KORELASI']];
+            const header = ['Variabel'];
+            for (let i=0; i<maxVars; i++) header.push(varNames[i]);
+            corrData.push(header);
+            for (let i=0; i<maxVars; i++) {
+                const row = [varNames[i]];
+                const colI = dataMatrix.map(r => r[i]);
+                for (let j=0; j<maxVars; j++) {
+                    const colJ = dataMatrix.map(r => r[j]);
+                    row.push(pearson(colI, colJ).toFixed(3));
+                }
+                corrData.push(row);
+            }
+            const wsCorr = XLSX.utils.aoa_to_sheet(corrData);
+            XLSX.utils.book_append_sheet(wb, wsCorr, 'Korelasi');
+            
+            // Sheet 6: Regresi
+            if (numVariables >= 2) {
+                const y = dataMatrix.map(r => r[0]);
+                const x = dataMatrix.map(r => r[1]);
+                const meanX = mean(x), meanY = mean(y);
+                const ss_xy = x.reduce((a, xi, i) => a + (xi - meanX) * (y[i] - meanY), 0);
+                const ss_xx = x.reduce((a, xi) => a + Math.pow(xi - meanX, 2), 0);
+                const b = ss_xy / ss_xx;
+                const aIntercept = meanY - b * meanX;
+                const yPred = x.map(xi => aIntercept + b * xi);
+                const res = y.map((yi, i) => yi - yPred[i]);
+                const ss_res = res.reduce((a, r) => a + r*r, 0);
+                const ss_tot = y.reduce((a, yi) => a + Math.pow(yi - meanY, 2), 0);
+                const r2 = 1 - (ss_res / ss_tot);
+                const rCorr = Math.sqrt(Math.max(0, r2)) * (b > 0 ? 1 : -1);
+                const regData = [
+                    ['ANALISIS REGRESI LINEAR'],
+                    ['Variabel Dependen (Y)', varNames[0]],
+                    ['Variabel Independen (X)', varNames[1]],
+                    [], ['Persamaan Regresi', `Y = ${aIntercept.toFixed(3)} + ${b.toFixed(3)}X`],
+                    ['R-squared (R²)', r2.toFixed(4)],
+                    ['Korelasi (r)', rCorr.toFixed(4)],
+                    ['Intercept (a)', aIntercept.toFixed(3)],
+                    ['Slope (b)', b.toFixed(3)],
+                    [], ['DATA REGRESI'],
+                    ['No', 'X', 'Y', 'Y Prediksi', 'Residual']
+                ];
+                for (let i=0; i<x.length; i++) {
+                    regData.push([i+1, x[i].toFixed(2), y[i].toFixed(2), yPred[i].toFixed(2), res[i].toFixed(2)]);
+                }
+                const wsReg = XLSX.utils.aoa_to_sheet(regData);
+                XLSX.utils.book_append_sheet(wb, wsReg, 'Regresi');
+            }
+            
+            // Sheet 7: Metadata
+            const metaData = [
+                ['SPSS WEB - METADATA'],
+                ['Tanggal Export', ts],
+                ['Jumlah Responden', numRespondents],
+                ['Jumlah Variabel', numVariables],
+                ['Nama Variabel', varNames.join(', ')],
+                [], ['Dibuat oleh', 'Instagram:@rezalameka'],
+                ['', '']
+            ];
+            const wsMeta = XLSX.utils.aoa_to_sheet(metaData);
+            XLSX.utils.book_append_sheet(wb, wsMeta, 'Metadata');
+            
+        } else if (type === 'data') {
+            // Export Data saja
+            const rows = [['Responden', ...varNames, 'Total']];
+            dataMatrix.forEach((row, i) => rows.push([`R${i+1}`, ...row, sum(row).toFixed(1)]));
+            const ws = XLSX.utils.aoa_to_sheet(rows);
+            XLSX.utils.book_append_sheet(wb, ws, 'Data');
+            
+        } else if (type === 'deskriptif') {
+            // Export Deskriptif saja
+            const all = dataMatrix.flat();
+            const data = [['STATISTIK DESKRIPTIF'], ['Statistik', 'Nilai'], ['Responden (N)', numRespondents],
+                ['Variabel', numVariables], ['Mean', mean(all).toFixed(3)], ['Median', median(all).toFixed(3)],
+                ['Std Dev', stdDev(all).toFixed(3)], ['Varians', variance(all).toFixed(3)], ['Min', min(all).toFixed(2)],
+                ['Max', max(all).toFixed(2)], [], ['PER VARIABEL'], ['Variabel', 'Mean', 'Median', 'Std Dev', 'Min', 'Max']];
+            for (let i=0; i<numVariables; i++) {
+                const col = dataMatrix.map(r => r[i]);
+                data.push([varNames[i], mean(col).toFixed(3), median(col).toFixed(3), stdDev(col).toFixed(3), min(col).toFixed(2), max(col).toFixed(2)]);
+            }
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            XLSX.utils.book_append_sheet(wb, ws, 'Deskriptif');
+            
+        } else if (type === 'validitas') {
+            // Export Validitas saja
+            const df = numRespondents - 2;
+            const rT = getRTable(df);
+            const data = [['UJI VALIDITAS'], ['df', df], ['r-tabel (α=0.05)', rT.toFixed(3)], [], ['Variabel', 'r-hitung', 'r-tabel', 'Status']];
+            let v = 0;
+            for (let i=0; i<numVariables; i++) {
+                const col = dataMatrix.map(r => r[i]);
+                const totalWithout = dataMatrix.map(r => sum(r) - r[i]);
+                const r = pearson(col, totalWithout);
+                const valid = Math.abs(r) >= rT;
+                if (valid) v++;
+                data.push([varNames[i], r.toFixed(3), rT.toFixed(3), valid ? 'Valid' : 'Tidak Valid']);
+            }
+            data.push([], ['Kesimpulan:', `${v}/${numVariables} valid (${(v/numVariables*100).toFixed(1)}%)`]);
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            XLSX.utils.book_append_sheet(wb, ws, 'Validitas');
+            
+        } else if (type === 'reliabilitas') {
+            // Export Reliabilitas saja
+            const k = numVariables;
+            const itemVars = [];
+            for (let i=0; i<k; i++) {
+                const col = dataMatrix.map(r => r[i]);
+                itemVars.push(variance(col));
+            }
+            const totalScores = dataMatrix.map(r => sum(r));
+            const totalVar = variance(totalScores);
+            const sumItemVar = sum(itemVars);
+            const alpha = (k / (k-1)) * (1 - (sumItemVar / totalVar));
+            const alphaFinal = Math.max(-1, Math.min(1, alpha));
+            const data = [['UJI RELIABILITAS (Cronbach\'s Alpha)'], ['Cronbach\'s Alpha', alphaFinal.toFixed(4)],
+                ['Jumlah Item (k)', k], ['Total Variance', totalVar.toFixed(3)], ['Sum Item Variances', sumItemVar.toFixed(3)],
+                [], ['ITEM STATISTICS'], ['Item', 'Mean', 'Std Dev', 'Variance']];
+            for (let i=0; i<k; i++) {
+                const col = dataMatrix.map(r => r[i]);
+                data.push([varNames[i], mean(col).toFixed(3), stdDev(col).toFixed(3), variance(col).toFixed(3)]);
+            }
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            XLSX.utils.book_append_sheet(wb, ws, 'Reliabilitas');
+            
+        } else if (type === 'korelasi') {
+            // Export Korelasi saja
+            const maxVars = Math.min(numVariables, 10);
+            const data = [['MATRIKS KORELASI']];
+            const header = ['Variabel'];
+            for (let i=0; i<maxVars; i++) header.push(varNames[i]);
+            data.push(header);
+            for (let i=0; i<maxVars; i++) {
+                const row = [varNames[i]];
+                const colI = dataMatrix.map(r => r[i]);
+                for (let j=0; j<maxVars; j++) {
+                    const colJ = dataMatrix.map(r => r[j]);
+                    row.push(pearson(colI, colJ).toFixed(3));
+                }
+                data.push(row);
+            }
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            XLSX.utils.book_append_sheet(wb, ws, 'Korelasi');
+            
+        } else if (type === 'regresi') {
+            // Export Regresi saja
+            if (numVariables < 2) { showToast('❌ Minimal 2 variabel!', true); return; }
+            const y = dataMatrix.map(r => r[0]);
+            const x = dataMatrix.map(r => r[1]);
+            const meanX = mean(x), meanY = mean(y);
+            const ss_xy = x.reduce((a, xi, i) => a + (xi - meanX) * (y[i] - meanY), 0);
+            const ss_xx = x.reduce((a, xi) => a + Math.pow(xi - meanX, 2), 0);
+            const b = ss_xy / ss_xx;
+            const aIntercept = meanY - b * meanX;
+            const yPred = x.map(xi => aIntercept + b * xi);
+            const res = y.map((yi, i) => yi - yPred[i]);
+            const ss_res = res.reduce((a, r) => a + r*r, 0);
+            const ss_tot = y.reduce((a, yi) => a + Math.pow(yi - meanY, 2), 0);
+            const r2 = 1 - (ss_res / ss_tot);
+            const rCorr = Math.sqrt(Math.max(0, r2)) * (b > 0 ? 1 : -1);
+            const data = [['ANALISIS REGRESI LINEAR'], ['Variabel Dependen (Y)', varNames[0]],
+                ['Variabel Independen (X)', varNames[1]], [], ['Persamaan Regresi', `Y = ${aIntercept.toFixed(3)} + ${b.toFixed(3)}X`],
+                ['R-squared (R²)', r2.toFixed(4)], ['Korelasi (r)', rCorr.toFixed(4)], ['Intercept (a)', aIntercept.toFixed(3)],
+                ['Slope (b)', b.toFixed(3)], [], ['DATA REGRESI'], ['No', 'X', 'Y', 'Y Prediksi', 'Residual']];
+            for (let i=0; i<x.length; i++) {
+                data.push([i+1, x[i].toFixed(2), y[i].toFixed(2), yPred[i].toFixed(2), res[i].toFixed(2)]);
+            }
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            XLSX.utils.book_append_sheet(wb, ws, 'Regresi');
+        }
+        
+        // Simpan file
         XLSX.writeFile(wb, 'SPSS_Web_Export.xlsx');
         showToast('✅ Export berhasil!');
         document.getElementById('exportPreview').innerHTML = `<div style="background:#e8eaf6; padding:20px; border-radius:8px; text-align:center;">
             <div style="font-size:48px;">📊</div>
             <h3 style="color:#1a237e;">Export ${type}</h3>
             <p style="color:#555;">✅ File: SPSS_Web_Export.xlsx</p>
+            ${type === 'all' ? '<p style="color:#555; font-size:12px; margin-top:5px;">📑 7 sheets: Data, Deskriptif, Validitas, Reliabilitas, Korelasi, Regresi, Metadata</p>' : ''}
         </div>`;
-    } catch(e) { showToast('❌ Gagal: ' + e.message, true); }
-}
-
-function exportAll(wb, ts) {
-    const meta = [['SPSS Web Export'], ['Tanggal:', ts], ['N:', numRespondents], ['Variabel:', numVariables], ['Nama:', varNames.join(', ')], ['', ''], ['Instagram:@rezalameka']];
-    const wsMeta = XLSX.utils.aoa_to_sheet(meta);
-    XLSX.utils.book_append_sheet(wb, wsMeta, 'Metadata');
-    exportData(wb, ts);
-    exportDesk(wb, ts);
-    exportValid(wb, ts);
-    exportReli(wb, ts);
-    exportKorel(wb, ts);
-    exportRegresi(wb, ts);
-}
-
-function exportData(wb, ts) {
-    const rows = [['Responden', ...varNames, 'Total']];
-    dataMatrix.forEach((row, i) => rows.push([`R${i+1}`, ...row, sum(row).toFixed(1)]));
-    const ws = XLSX.utils.aoa_to_sheet(rows);
-    XLSX.utils.book_append_sheet(wb, ws, 'Data');
-}
-
-function exportDesk(wb, ts) {
-    const all = dataMatrix.flat();
-    const data = [['DESKRIPTIF'], ['Statistik', 'Nilai'], ['N', numRespondents], ['Variabel', numVariables],
-        ['Mean', mean(all).toFixed(3)], ['Median', median(all).toFixed(3)], ['Std Dev', stdDev(all).toFixed(3)],
-        ['Varians', variance(all).toFixed(3)], ['Min', min(all).toFixed(2)], ['Max', max(all).toFixed(2)],
-        [], ['Per Variabel'], ['Variabel', 'Mean', 'Median', 'Std Dev', 'Min', 'Max']];
-    for (let i=0; i<numVariables; i++) {
-        const col = dataMatrix.map(r => r[i]);
-        data.push([varNames[i], mean(col).toFixed(3), median(col).toFixed(3), stdDev(col).toFixed(3), min(col).toFixed(2), max(col).toFixed(2)]);
+    } catch(e) {
+        showToast('❌ Gagal export: ' + e.message, true);
+        console.error(e);
     }
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    XLSX.utils.book_append_sheet(wb, ws, 'Deskriptif');
-}
-
-function exportValid(wb, ts) {
-    const df = numRespondents - 2, rT = getRTable(df);
-    const data = [['VALIDITAS'], ['df', df], ['r-tabel', rT.toFixed(3)], [], ['Variabel', 'r-hitung', 'r-tabel', 'Status']];
-    let v = 0;
-    for (let i=0; i<numVariables; i++) {
-        const col = dataMatrix.map(r => r[i]);
-        const totalWithout = dataMatrix.map(r => sum(r) - r[i]);
-        const r = pearson(col, totalWithout);
-        const valid = Math.abs(r) >= rT;
-        if (valid) v++;
-        data.push([varNames[i], r.toFixed(3), rT.toFixed(3), valid ? 'Valid' : 'Tidak Valid']);
-    }
-    data.push([], ['Kesimpulan:', `${v}/${numVariables} valid (${(v/numVariables*100).toFixed(1)}%)`]);
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    XLSX.utils.book_append_sheet(wb, ws, 'Validitas');
-}
-
-function exportReli(wb, ts) {
-    const k = numVariables;
-    const itemVars = [];
-    for (let i=0; i<k; i++) {
-        const col = dataMatrix.map(r => r[i]);
-        itemVars.push(variance(col));
-    }
-    const totalScores = dataMatrix.map(r => sum(r));
-    const totalVar = variance(totalScores);
-    const sumItemVar = sum(itemVars);
-    const alpha = (k / (k-1)) * (1 - (sumItemVar / totalVar));
-    const alphaFinal = Math.max(-1, Math.min(1, alpha));
-    const data = [['RELIABILITAS'], ['Cronbach Alpha', alphaFinal.toFixed(4)], ['k', k], ['Total Var', totalVar.toFixed(3)], ['Sum Item Var', sumItemVar.toFixed(3)], [], ['Item Statistics'], ['Item', 'Mean', 'Std Dev', 'Variance']];
-    for (let i=0; i<k; i++) {
-        const col = dataMatrix.map(r => r[i]);
-        data.push([varNames[i], mean(col).toFixed(3), stdDev(col).toFixed(3), variance(col).toFixed(3)]);
-    }
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    XLSX.utils.book_append_sheet(wb, ws, 'Reliabilitas');
-}
-
-function exportKorel(wb, ts) {
-    const maxVars = Math.min(numVariables, 10);
-    const data = [['KORELASI']];
-    const header = ['Variabel'];
-    for (let i=0; i<maxVars; i++) header.push(varNames[i]);
-    data.push(header);
-    for (let i=0; i<maxVars; i++) {
-        const row = [varNames[i]];
-        const colI = dataMatrix.map(r => r[i]);
-        for (let j=0; j<maxVars; j++) {
-            const colJ = dataMatrix.map(r => r[j]);
-            row.push(pearson(colI, colJ).toFixed(3));
-        }
-        data.push(row);
-    }
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    XLSX.utils.book_append_sheet(wb, ws, 'Korelasi');
-}
-
-function exportRegresi(wb, ts) {
-    if (numVariables < 2) return;
-    const y = dataMatrix.map(r => r[0]), x = dataMatrix.map(r => r[1]);
-    const meanX = mean(x), meanY = mean(y);
-    const ss_xy = x.reduce((a, xi, i) => a + (xi - meanX) * (y[i] - meanY), 0);
-    const ss_xx = x.reduce((a, xi) => a + Math.pow(xi - meanX, 2), 0);
-    const b = ss_xy / ss_xx, a = meanY - b * meanX;
-    const yPred = x.map(xi => a + b * xi);
-    const res = y.map((yi, i) => yi - yPred[i]);
-    const ss_res = res.reduce((a, r) => a + r*r, 0), ss_tot = y.reduce((a, yi) => a + Math.pow(yi - meanY, 2), 0);
-    const r2 = 1 - (ss_res / ss_tot), r = Math.sqrt(Math.max(0, r2)) * (b > 0 ? 1 : -1);
-    const data = [['REGRESI'], ['Y', varNames[0]], ['X', varNames[1]], [], ['Persamaan', `Y = ${a.toFixed(3)} + ${b.toFixed(3)}X`],
-        ['R²', r2.toFixed(4)], ['r', r.toFixed(4)], ['Intercept', a.toFixed(3)], ['Slope', b.toFixed(3)], [], ['Data', 'X', 'Y', 'Y Pred', 'Residual']];
-    for (let i=0; i<x.length; i++) data.push([i+1, x[i].toFixed(2), y[i].toFixed(2), yPred[i].toFixed(2), res[i].toFixed(2)]);
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    XLSX.utils.book_append_sheet(wb, ws, 'Regresi');
 }
 
 // ============================================================
