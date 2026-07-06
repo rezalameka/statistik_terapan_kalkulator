@@ -427,11 +427,20 @@
         </div>
     </div>
 
-    <!-- TAB 4: VALIDITAS -->
+    <!-- TAB 4: VALIDITAS (DIPERBAIKI) -->
     <div class="tab-content" id="tabValiditas">
         <div class="grid-2">
             <div class="card">
                 <div class="card-title">✅ Uji Validitas</div>
+                <div style="margin-bottom:15px;">
+                    <label style="font-size:13px; font-weight:600; margin-right:10px;">Tingkat Signifikansi:</label>
+                    <select class="form-control" id="alphaLevel" style="width:auto; display:inline-block; padding:5px 12px;">
+                        <option value="0.05">α = 0.05 (95%)</option>
+                        <option value="0.01">α = 0.01 (99%)</option>
+                        <option value="0.10" selected>α = 0.10 (90%)</option>
+                    </select>
+                    <button class="btn btn-sm btn-primary" onclick="updateValiditas()" style="margin-left:10px;">Update</button>
+                </div>
                 <div id="validitasContent">
                     <p style="color:#999; text-align:center; padding:30px 0;">Proses data terlebih dahulu</p>
                 </div>
@@ -546,7 +555,7 @@
                     <button class="btn btn-teal" onclick="exportToExcel('regresi')">📈 Export Regresi</button>
                 </div>
                 <div style="margin-top:15px; padding:10px; background:#e8eaf6; border-radius:8px; font-size:13px; color:#555;">
-                    💡 <strong>Export Semua:</strong> Satu file Excel dengan 7 sheet (Data, Deskriptif, Validitas, Reliabilitas, Korelasi, Regresi, Metadata)
+                    💡 <strong>Export Semua:</strong> Satu file Excel dengan 7 sheet
                 </div>
             </div>
             <div class="card">
@@ -607,38 +616,115 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
 // ============================================================
 // FUNGSI STATISTIK
 // ============================================================
-function mean(arr) { if (!arr || arr.length === 0) return 0; return arr.reduce((a,b) => a+b, 0) / arr.length; }
-function sum(arr) { return arr.reduce((a,b) => a+b, 0); }
-function variance(arr) { if (!arr || arr.length < 2) return 0; const m = mean(arr); return arr.reduce((a,b) => a + Math.pow(b-m, 2), 0) / (arr.length - 1); }
-function stdDev(arr) { return Math.sqrt(variance(arr)); }
-function median(arr) { if (!arr || arr.length === 0) return 0; const s = [...arr].sort((a,b)=>a-b); const m = Math.floor(s.length/2); return s.length%2===0 ? (s[m-1]+s[m])/2 : s[m]; }
+function mean(arr) { 
+    if (!arr || arr.length === 0) return 0; 
+    return arr.reduce((a,b) => a+b, 0) / arr.length; 
+}
+
+function sum(arr) { 
+    return arr.reduce((a,b) => a+b, 0); 
+}
+
+function variance(arr) { 
+    if (!arr || arr.length < 2) return 0; 
+    const m = mean(arr); 
+    return arr.reduce((a,b) => a + Math.pow(b-m, 2), 0) / (arr.length - 1); 
+}
+
+function stdDev(arr) { 
+    return Math.sqrt(variance(arr)); 
+}
+
+function median(arr) { 
+    if (!arr || arr.length === 0) return 0; 
+    const s = [...arr].sort((a,b)=>a-b); 
+    const m = Math.floor(s.length/2); 
+    return s.length%2===0 ? (s[m-1]+s[m])/2 : s[m]; 
+}
+
 function min(arr) { return Math.min(...arr); }
 function max(arr) { return Math.max(...arr); }
 
+// ============================================================
+// KORELASI PEARSON
+// ============================================================
 function pearson(x, y) {
     const n = x.length;
     if (n === 0) return 0;
-    const sx = sum(x), sy = sum(y);
-    const sxy = x.reduce((a,b,i) => a + b*y[i], 0);
-    const sx2 = x.reduce((a,b) => a + b*b, 0);
-    const sy2 = y.reduce((a,b) => a + b*b, 0);
-    const num = n * sxy - sx * sy;
-    const den = Math.sqrt((n * sx2 - sx*sx) * (n * sy2 - sy*sy));
-    return den === 0 ? 0 : num / den;
+    
+    const sumX = sum(x);
+    const sumY = sum(y);
+    const sumXY = x.reduce((a, b, i) => a + b * y[i], 0);
+    const sumX2 = x.reduce((a, b) => a + b * b, 0);
+    const sumY2 = y.reduce((a, b) => a + b * b, 0);
+    
+    const numerator = n * sumXY - sumX * sumY;
+    const denominator = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
+    
+    if (denominator === 0) return 0;
+    return numerator / denominator;
 }
 
-function getRTable(df) {
-    const t = {1:0.997,2:0.950,3:0.878,4:0.811,5:0.754,6:0.707,7:0.666,8:0.632,9:0.602,10:0.576,11:0.553,12:0.532,13:0.514,14:0.497,15:0.482,16:0.468,17:0.456,18:0.444,19:0.433,20:0.423,21:0.413,22:0.404,23:0.396,24:0.388,25:0.381,26:0.374,27:0.367,28:0.361,29:0.355,30:0.349,35:0.325,40:0.304,45:0.288,50:0.273,60:0.250,70:0.232,80:0.217,90:0.205,100:0.195};
-    if (t[df]) return t[df];
-    if (df > 100) return 0.195;
-    if (df < 1) return 0.997;
-    const keys = Object.keys(t).map(Number).sort((a,b)=>a-b);
-    let l=keys[0], u=keys[keys.length-1];
-    for (let i=0; i<keys.length-1; i++) {
-        if (df >= keys[i] && df <= keys[i+1]) { l=keys[i]; u=keys[i+1]; break; }
+// ============================================================
+// R-TABEL YANG BENAR (DIPERBAIKI)
+// ============================================================
+function getRTable(df, alpha = 0.05) {
+    // Tabel r untuk berbagai tingkat signifikansi (two-tailed)
+    const tables = {
+        0.05: {
+            1:0.997, 2:0.950, 3:0.878, 4:0.811, 5:0.754,
+            6:0.707, 7:0.666, 8:0.632, 9:0.602, 10:0.576,
+            11:0.553, 12:0.532, 13:0.514, 14:0.497, 15:0.482,
+            16:0.468, 17:0.456, 18:0.444, 19:0.433, 20:0.423,
+            21:0.413, 22:0.404, 23:0.396, 24:0.388, 25:0.381,
+            26:0.374, 27:0.367, 28:0.361, 29:0.355, 30:0.349,
+            35:0.325, 40:0.304, 45:0.288, 50:0.273,
+            60:0.250, 70:0.232, 80:0.217, 90:0.205, 100:0.195
+        },
+        0.01: {
+            1:1.000, 2:0.990, 3:0.959, 4:0.917, 5:0.874,
+            6:0.834, 7:0.798, 8:0.765, 9:0.735, 10:0.708,
+            11:0.684, 12:0.661, 13:0.641, 14:0.623, 15:0.606,
+            16:0.590, 17:0.575, 18:0.561, 19:0.549, 20:0.537,
+            21:0.526, 22:0.515, 23:0.505, 24:0.496, 25:0.487,
+            26:0.478, 27:0.470, 28:0.463, 29:0.456, 30:0.449,
+            35:0.418, 40:0.393, 45:0.372, 50:0.354,
+            60:0.325, 70:0.302, 80:0.283, 90:0.267, 100:0.254
+        },
+        0.10: {
+            1:0.988, 2:0.900, 3:0.805, 4:0.729, 5:0.669,
+            6:0.621, 7:0.582, 8:0.549, 9:0.521, 10:0.497,
+            11:0.476, 12:0.457, 13:0.441, 14:0.426, 15:0.412,
+            16:0.400, 17:0.389, 18:0.378, 19:0.369, 20:0.360,
+            21:0.352, 22:0.344, 23:0.337, 24:0.330, 25:0.323,
+            26:0.317, 27:0.311, 28:0.306, 29:0.301, 30:0.296,
+            35:0.275, 40:0.257, 45:0.243, 50:0.231,
+            60:0.211, 70:0.195, 80:0.183, 90:0.173, 100:0.164
+        }
+    };
+    
+    const table = tables[alpha] || tables[0.05];
+    
+    if (df <= 0) return 0.997;
+    if (df >= 100) {
+        if (alpha === 0.01) return 0.254;
+        if (alpha === 0.10) return 0.164;
+        return 0.195;
     }
-    const r = (df-l)/(u-l);
-    return t[l] + r * (t[u]-t[l]);
+    if (table[df]) return table[df];
+    
+    // Interpolasi
+    const keys = Object.keys(table).map(Number).sort((a,b) => a-b);
+    let lower = keys[0], upper = keys[keys.length-1];
+    for (let i=0; i<keys.length-1; i++) {
+        if (df >= keys[i] && df <= keys[i+1]) {
+            lower = keys[i];
+            upper = keys[i+1];
+            break;
+        }
+    }
+    const ratio = (df - lower) / (upper - lower);
+    return table[lower] + ratio * (table[upper] - table[lower]);
 }
 
 // ============================================================
@@ -686,7 +772,10 @@ function useImportedData() {
 
 function showPreview() {
     const c = document.getElementById('previewContainer');
-    if (dataMatrix.length === 0) { c.innerHTML = '<p style="color:#999; text-align:center; padding:30px 0;">Belum ada data.</p>'; return; }
+    if (dataMatrix.length === 0) { 
+        c.innerHTML = '<p style="color:#999; text-align:center; padding:30px 0;">Belum ada data.</p>'; 
+        return; 
+    }
     let html = `<div class="table-scroll"><table><tr><th>Responden</th>`;
     varNames.forEach(v => html += `<th>${v}</th>`);
     html += `<th>Total</th></tr>`;
@@ -845,29 +934,51 @@ function drawDeskriptifChart() {
 }
 
 // ============================================================
-// 2. VALIDITAS
+// 2. VALIDITAS (DIPERBAIKI DENGAN OPSI ALPHA)
 // ============================================================
 function updateValiditas() {
     const c = document.getElementById('validitasContent');
     const df = numRespondents - 2;
-    const rTable = getRTable(df);
-    let html = `<div class="stat-box"><span class="label">df = ${df}</span><span class="value">r-tabel = ${rTable.toFixed(3)}</span></div>
+    const alpha = parseFloat(document.getElementById('alphaLevel').value);
+    const rTable = getRTable(df, alpha);
+    
+    // Hitung total skor setiap responden
+    const totalScores = dataMatrix.map(row => sum(row));
+    
+    let html = `<div class="stat-box"><span class="label">df = ${df}</span><span class="value">r-tabel (α=${alpha}) = ${rTable.toFixed(3)}</span></div>
         <div class="table-scroll"><table><tr><th>Variabel</th><th>r-hitung</th><th>r-tabel</th><th>Status</th></tr>`;
-    let valid = 0;
+    
+    let validCount = 0;
+    let allR = [];
     for (let i=0; i<numVariables; i++) {
-        const col = dataMatrix.map(r => r[i]);
-        const totalWithout = dataMatrix.map(r => sum(r) - r[i]);
-        const r = pearson(col, totalWithout);
-        const isVal = Math.abs(r) >= rTable;
-        if (isVal) valid++;
-        const status = isVal ? '✅ Valid' : '❌ Tidak Valid';
-        const color = isVal ? 'green' : 'red';
-        html += `<tr><td><strong>${varNames[i]}</strong></td><td>${r.toFixed(3)}</td><td>${rTable.toFixed(3)}</td><td class="value ${color}">${status}</td></tr>`;
+        const itemScores = dataMatrix.map(row => row[i]);
+        const r = pearson(itemScores, totalScores);
+        allR.push(r);
+        const isValid = Math.abs(r) >= rTable;
+        if (isValid) validCount++;
+        const status = isValid ? '✅ Valid' : '❌ Tidak Valid';
+        const color = isValid ? 'green' : 'red';
+        html += `<tr><td><strong>${varNames[i]}</strong></td>
+                <td>${r.toFixed(3)}</td>
+                <td>${rTable.toFixed(3)}</td>
+                <td class="value ${color}">${status}</td></tr>`;
     }
     html += '</table></div>';
-    const pct = (valid/numVariables*100).toFixed(1);
-    html += `<div class="interpretation-box"><h4>Kesimpulan</h4><p>${valid} dari ${numVariables} variabel valid (${pct}%)</p>
-        <p>${valid === numVariables ? '✅ Semua valid.' : valid >= numVariables/2 ? '⚠️ Beberapa perlu revisi.' : '❌ Sebagian besar tidak valid.'}</p></div>`;
+    
+    const pct = (validCount/numVariables*100).toFixed(1);
+    const avgR = mean(allR);
+    
+    html += `<div class="interpretation-box"><h4>📌 Kesimpulan Validitas</h4>
+        <p>${validCount} dari ${numVariables} variabel valid (${pct}%)</p>
+        <p>Rata-rata korelasi item-total: <strong>${avgR.toFixed(3)}</strong></p>
+        <p>${validCount === numVariables ? '✅ Semua item valid. Instrumen dinyatakan VALID.' : 
+            validCount >= numVariables/2 ? '⚠️ Beberapa item tidak valid. Pertimbangkan untuk merevisi atau menghapus item yang tidak valid.' : 
+            '❌ Sebagian besar item tidak valid. Instrumen perlu direvisi total.'}</p>
+        <p style="font-size:12px; color:#666; margin-top:5px;">
+            💡 Korelasi item-total dihitung dengan Pearson Correlation. 
+            Item valid jika r-hitung ≥ r-tabel (α=${alpha}).
+        </p>
+    </div>`;
     c.innerHTML = html;
     drawHeatmap();
 }
@@ -876,11 +987,15 @@ function drawHeatmap() {
     const canvas = document.getElementById('heatmapChart');
     if (!canvas) return;
     if (chartInstances.heatmap) { chartInstances.heatmap.destroy(); }
+    
     const maxVars = Math.min(numVariables, 8);
     const labels = varNames.slice(0, maxVars);
-    const data = [], colors = [];
+    const data = [];
+    const backgroundColors = [];
+    
     for (let i=0; i<maxVars; i++) {
-        const row = [], colorRow = [];
+        const row = [];
+        const colorRow = [];
         const colI = dataMatrix.map(r => r[i]);
         for (let j=0; j<maxVars; j++) {
             const colJ = dataMatrix.map(r => r[j]);
@@ -893,8 +1008,9 @@ function drawHeatmap() {
             else colorRow.push('rgba(229,115,115,0.8)');
         }
         data.push(row);
-        colors.push(colorRow);
+        backgroundColors.push(colorRow);
     }
+    
     const ctx = canvas.getContext('2d');
     chartInstances.heatmap = new Chart(ctx, {
         type: 'bar',
@@ -903,7 +1019,7 @@ function drawHeatmap() {
             datasets: labels.map((_, idx) => ({
                 label: labels[idx],
                 data: data[idx],
-                backgroundColor: colors[idx],
+                backgroundColor: backgroundColors[idx],
                 borderColor: '#fff',
                 borderWidth: 1
             }))
@@ -913,9 +1029,16 @@ function drawHeatmap() {
             maintainAspectRatio: false,
             plugins: {
                 legend: { display: true, position: 'top' },
-                tooltip: { callbacks: { label: (ctx) => `r = ${ctx.raw.toFixed(3)}` } }
+                tooltip: { 
+                    callbacks: { 
+                        label: (ctx) => `r = ${ctx.raw.toFixed(3)}` 
+                    } 
+                }
             },
-            scales: { x: { grid: { display: false } }, y: { beginAtZero: true, max: 1, grid: { display: false } } }
+            scales: { 
+                x: { grid: { display: false } }, 
+                y: { beginAtZero: true, max: 1, grid: { display: false } } 
+            }
         }
     });
 }
@@ -927,36 +1050,58 @@ function updateReliabilitas() {
     const c = document.getElementById('reliabilitasContent');
     const is = document.getElementById('itemStatsContent');
     const k = numVariables;
-    if (k < 2) { c.innerHTML = '<p style="color:#999;">Minimal 2 variabel</p>'; return; }
+    if (k < 2) { 
+        c.innerHTML = '<p style="color:#999;">Minimal 2 variabel untuk uji reliabilitas</p>'; 
+        return; 
+    }
+    
     const itemVariances = [];
     for (let i=0; i<k; i++) {
         const col = dataMatrix.map(r => r[i]);
         itemVariances.push(variance(col));
     }
-    const totalScores = dataMatrix.map(r => sum(r));
+    
+    const totalScores = dataMatrix.map(row => sum(row));
     const totalVar = variance(totalScores);
     const sumItemVar = sum(itemVariances);
+    
     const alpha = (k / (k-1)) * (1 - (sumItemVar / totalVar));
     const alphaFinal = Math.max(-1, Math.min(1, alpha));
+    
     let interpret = '', color = '';
-    if (alphaFinal >= 0.90) { interpret = 'Sangat Tinggi'; color = 'green'; }
-    else if (alphaFinal >= 0.80) { interpret = 'Tinggi'; color = 'green'; }
-    else if (alphaFinal >= 0.70) { interpret = 'Cukup'; color = 'green'; }
-    else if (alphaFinal >= 0.60) { interpret = 'Rendah'; color = 'orange'; }
-    else if (alphaFinal >= 0.50) { interpret = 'Sangat Rendah'; color = 'red'; }
-    else { interpret = 'Tidak Reliabel'; color = 'red'; }
+    if (alphaFinal >= 0.90) { interpret = 'Sangat Tinggi (Excellent)'; color = 'green'; }
+    else if (alphaFinal >= 0.80) { interpret = 'Tinggi (Good)'; color = 'green'; }
+    else if (alphaFinal >= 0.70) { interpret = 'Cukup (Acceptable)'; color = 'green'; }
+    else if (alphaFinal >= 0.60) { interpret = 'Rendah (Questionable)'; color = 'orange'; }
+    else if (alphaFinal >= 0.50) { interpret = 'Sangat Rendah (Poor)'; color = 'red'; }
+    else { interpret = 'Tidak Reliabel (Unacceptable)'; color = 'red'; }
+    
     c.innerHTML = `
         <div class="stat-box"><span class="label">Cronbach's Alpha</span><span class="value ${color}">${alphaFinal.toFixed(4)}</span></div>
         <div class="stat-box"><span class="label">Jumlah Item (k)</span><span class="value">${k}</span></div>
         <div class="stat-box"><span class="label">Total Variance</span><span class="value">${totalVar.toFixed(3)}</span></div>
         <div class="stat-box"><span class="label">Sum Item Variances</span><span class="value">${sumItemVar.toFixed(3)}</span></div>
-        <div class="interpretation-box"><h4>Interpretasi</h4><p><strong>${interpret}</strong></p>
-        <p>${alphaFinal >= 0.70 ? '✅ RELIABEL' : '❌ TIDAK RELIABEL'}</p></div>
-    `;
-    let html = `<div class="table-scroll"><table><tr><th>Item</th><th>Mean</th><th>Std Dev</th><th>Variance</th></tr>`;
+        <div class="interpretation-box"><h4>📌 Interpretasi Reliabilitas</h4>
+        <p><strong>${interpret}</strong></p>
+        <p>${alphaFinal >= 0.70 ? '✅ Instrumen dinyatakan RELIABEL' : '❌ Instrumen dinyatakan TIDAK RELIABEL'}</p>
+        <p style="font-size:12px; color:#666; margin-top:5px;">
+            💡 Cronbach\'s Alpha ≥ 0.70 menunjukkan instrumen reliabel.
+        </p>
+    </div>`;
+    
+    let html = `<div class="table-scroll"><table>
+        <tr><th>Item</th><th>Mean</th><th>Std Dev</th><th>Variance</th><th>Item-Total r</th></tr>`;
+    const totalScoresForCorr = dataMatrix.map(row => sum(row));
     for (let i=0; i<k; i++) {
         const col = dataMatrix.map(r => r[i]);
-        html += `<tr><td><strong>${varNames[i]}</strong></td><td>${mean(col).toFixed(3)}</td><td>${stdDev(col).toFixed(3)}</td><td>${variance(col).toFixed(3)}</td></tr>`;
+        const r = pearson(col, totalScoresForCorr);
+        html += `<tr>
+            <td><strong>${varNames[i]}</strong></td>
+            <td>${mean(col).toFixed(3)}</td>
+            <td>${stdDev(col).toFixed(3)}</td>
+            <td>${variance(col).toFixed(3)}</td>
+            <td>${r.toFixed(3)}</td>
+        </tr>`;
     }
     html += '</table></div>';
     is.innerHTML = html;
@@ -1076,9 +1221,9 @@ function calculateRegresi() {
         <div class="stat-box"><span class="label">r</span><span class="value">${r.toFixed(4)}</span></div>
         <div class="stat-box"><span class="label">Intercept</span><span class="value">${a.toFixed(3)}</span></div>
         <div class="stat-box"><span class="label">Slope</span><span class="value">${b.toFixed(3)}</span></div>
-        <div class="interpretation-box"><h4>Interpretasi</h4>
+        <div class="interpretation-box"><h4>📌 Interpretasi Regresi</h4>
         <p>${r2 >= 0.8 ? '✅ Model sangat baik' : r2 >= 0.6 ? '⚠️ Model cukup baik' : '❌ Model kurang baik'}</p>
-        <p>${Math.abs(b) > 0.1 ? `Setiap 1 unit X naik, Y naik ${b.toFixed(2)} unit` : 'Pengaruh X sangat kecil'}</p></div>
+        <p>${Math.abs(b) > 0.1 ? `Setiap 1 unit X naik, Y naik ${b.toFixed(2)} unit` : 'Pengaruh X terhadap Y sangat kecil'}</p></div>
     `;
     drawRegresiPlot(x, y, a, b, varNames[xIdx], varNames[yIdx]);
 }
@@ -1237,7 +1382,7 @@ function refreshCharts() {
 }
 
 // ============================================================
-// EXPORT (DIPERBAIKI)
+// EXPORT
 // ============================================================
 function exportToExcel(type) {
     if (dataMatrix.length === 0) { showToast('❌ Tidak ada data!', true); return; }
@@ -1245,7 +1390,6 @@ function exportToExcel(type) {
     const ts = new Date().toLocaleString('id-ID');
     try {
         if (type === 'all') {
-            // EXPORT SEMUA DALAM 1 FILE MULTIPLE SHEETS
             // Sheet 1: Data
             const dataRows = [['Responden', ...varNames, 'Total']];
             dataMatrix.forEach((row, i) => {
@@ -1279,19 +1423,20 @@ function exportToExcel(type) {
             
             // Sheet 3: Validitas
             const df = numRespondents - 2;
-            const rT = getRTable(df);
+            const alpha = parseFloat(document.getElementById('alphaLevel').value) || 0.10;
+            const rT = getRTable(df, alpha);
+            const totalScores = dataMatrix.map(row => sum(row));
             const validData = [
                 ['UJI VALIDITAS'],
                 ['df', df],
-                ['r-tabel (α=0.05)', rT.toFixed(3)],
+                ['r-tabel (α=' + alpha + ')', rT.toFixed(3)],
                 [],
                 ['Variabel', 'r-hitung', 'r-tabel', 'Status']
             ];
             let vCount = 0;
             for (let i=0; i<numVariables; i++) {
                 const col = dataMatrix.map(r => r[i]);
-                const totalWithout = dataMatrix.map(r => sum(r) - r[i]);
-                const r = pearson(col, totalWithout);
+                const r = pearson(col, totalScores);
                 const valid = Math.abs(r) >= rT;
                 if (valid) vCount++;
                 validData.push([varNames[i], r.toFixed(3), rT.toFixed(3), valid ? 'Valid' : 'Tidak Valid']);
@@ -1307,11 +1452,11 @@ function exportToExcel(type) {
                 const col = dataMatrix.map(r => r[i]);
                 itemVars.push(variance(col));
             }
-            const totalScores = dataMatrix.map(r => sum(r));
-            const totalVar = variance(totalScores);
+            const totalScoresRel = dataMatrix.map(r => sum(r));
+            const totalVar = variance(totalScoresRel);
             const sumItemVar = sum(itemVars);
-            const alpha = (k / (k-1)) * (1 - (sumItemVar / totalVar));
-            const alphaFinal = Math.max(-1, Math.min(1, alpha));
+            const alphaCron = (k / (k-1)) * (1 - (sumItemVar / totalVar));
+            const alphaFinal = Math.max(-1, Math.min(1, alphaCron));
             const relData = [
                 ['UJI RELIABILITAS (Cronbach\'s Alpha)'],
                 ['Cronbach\'s Alpha', alphaFinal.toFixed(4)],
@@ -1319,11 +1464,12 @@ function exportToExcel(type) {
                 ['Total Variance', totalVar.toFixed(3)],
                 ['Sum Item Variances', sumItemVar.toFixed(3)],
                 [], ['ITEM STATISTICS'],
-                ['Item', 'Mean', 'Std Dev', 'Variance']
+                ['Item', 'Mean', 'Std Dev', 'Variance', 'Item-Total r']
             ];
             for (let i=0; i<k; i++) {
                 const col = dataMatrix.map(r => r[i]);
-                relData.push([varNames[i], mean(col).toFixed(3), stdDev(col).toFixed(3), variance(col).toFixed(3)]);
+                const r = pearson(col, totalScoresRel);
+                relData.push([varNames[i], mean(col).toFixed(3), stdDev(col).toFixed(3), variance(col).toFixed(3), r.toFixed(3)]);
             }
             const wsRel = XLSX.utils.aoa_to_sheet(relData);
             XLSX.utils.book_append_sheet(wb, wsRel, 'Reliabilitas');
@@ -1387,21 +1533,17 @@ function exportToExcel(type) {
                 ['Jumlah Responden', numRespondents],
                 ['Jumlah Variabel', numVariables],
                 ['Nama Variabel', varNames.join(', ')],
-                [], ['Dibuat oleh', 'Instagram:@rezalameka'],
-                ['', '']
+                [], ['Dibuat oleh', 'Instagram:@rezalameka']
             ];
             const wsMeta = XLSX.utils.aoa_to_sheet(metaData);
             XLSX.utils.book_append_sheet(wb, wsMeta, 'Metadata');
             
         } else if (type === 'data') {
-            // Export Data saja
             const rows = [['Responden', ...varNames, 'Total']];
             dataMatrix.forEach((row, i) => rows.push([`R${i+1}`, ...row, sum(row).toFixed(1)]));
             const ws = XLSX.utils.aoa_to_sheet(rows);
             XLSX.utils.book_append_sheet(wb, ws, 'Data');
-            
         } else if (type === 'deskriptif') {
-            // Export Deskriptif saja
             const all = dataMatrix.flat();
             const data = [['STATISTIK DESKRIPTIF'], ['Statistik', 'Nilai'], ['Responden (N)', numRespondents],
                 ['Variabel', numVariables], ['Mean', mean(all).toFixed(3)], ['Median', median(all).toFixed(3)],
@@ -1413,17 +1555,16 @@ function exportToExcel(type) {
             }
             const ws = XLSX.utils.aoa_to_sheet(data);
             XLSX.utils.book_append_sheet(wb, ws, 'Deskriptif');
-            
         } else if (type === 'validitas') {
-            // Export Validitas saja
             const df = numRespondents - 2;
-            const rT = getRTable(df);
-            const data = [['UJI VALIDITAS'], ['df', df], ['r-tabel (α=0.05)', rT.toFixed(3)], [], ['Variabel', 'r-hitung', 'r-tabel', 'Status']];
+            const alpha = parseFloat(document.getElementById('alphaLevel').value) || 0.10;
+            const rT = getRTable(df, alpha);
+            const totalScores = dataMatrix.map(row => sum(row));
+            const data = [['UJI VALIDITAS'], ['df', df], ['r-tabel (α=' + alpha + ')', rT.toFixed(3)], [], ['Variabel', 'r-hitung', 'r-tabel', 'Status']];
             let v = 0;
             for (let i=0; i<numVariables; i++) {
                 const col = dataMatrix.map(r => r[i]);
-                const totalWithout = dataMatrix.map(r => sum(r) - r[i]);
-                const r = pearson(col, totalWithout);
+                const r = pearson(col, totalScores);
                 const valid = Math.abs(r) >= rT;
                 if (valid) v++;
                 data.push([varNames[i], r.toFixed(3), rT.toFixed(3), valid ? 'Valid' : 'Tidak Valid']);
@@ -1431,20 +1572,18 @@ function exportToExcel(type) {
             data.push([], ['Kesimpulan:', `${v}/${numVariables} valid (${(v/numVariables*100).toFixed(1)}%)`]);
             const ws = XLSX.utils.aoa_to_sheet(data);
             XLSX.utils.book_append_sheet(wb, ws, 'Validitas');
-            
         } else if (type === 'reliabilitas') {
-            // Export Reliabilitas saja
             const k = numVariables;
             const itemVars = [];
             for (let i=0; i<k; i++) {
                 const col = dataMatrix.map(r => r[i]);
                 itemVars.push(variance(col));
             }
-            const totalScores = dataMatrix.map(r => sum(r));
-            const totalVar = variance(totalScores);
+            const totalScoresRel = dataMatrix.map(r => sum(r));
+            const totalVar = variance(totalScoresRel);
             const sumItemVar = sum(itemVars);
-            const alpha = (k / (k-1)) * (1 - (sumItemVar / totalVar));
-            const alphaFinal = Math.max(-1, Math.min(1, alpha));
+            const alphaCron = (k / (k-1)) * (1 - (sumItemVar / totalVar));
+            const alphaFinal = Math.max(-1, Math.min(1, alphaCron));
             const data = [['UJI RELIABILITAS (Cronbach\'s Alpha)'], ['Cronbach\'s Alpha', alphaFinal.toFixed(4)],
                 ['Jumlah Item (k)', k], ['Total Variance', totalVar.toFixed(3)], ['Sum Item Variances', sumItemVar.toFixed(3)],
                 [], ['ITEM STATISTICS'], ['Item', 'Mean', 'Std Dev', 'Variance']];
@@ -1454,9 +1593,7 @@ function exportToExcel(type) {
             }
             const ws = XLSX.utils.aoa_to_sheet(data);
             XLSX.utils.book_append_sheet(wb, ws, 'Reliabilitas');
-            
         } else if (type === 'korelasi') {
-            // Export Korelasi saja
             const maxVars = Math.min(numVariables, 10);
             const data = [['MATRIKS KORELASI']];
             const header = ['Variabel'];
@@ -1473,9 +1610,7 @@ function exportToExcel(type) {
             }
             const ws = XLSX.utils.aoa_to_sheet(data);
             XLSX.utils.book_append_sheet(wb, ws, 'Korelasi');
-            
         } else if (type === 'regresi') {
-            // Export Regresi saja
             if (numVariables < 2) { showToast('❌ Minimal 2 variabel!', true); return; }
             const y = dataMatrix.map(r => r[0]);
             const x = dataMatrix.map(r => r[1]);
@@ -1501,14 +1636,12 @@ function exportToExcel(type) {
             XLSX.utils.book_append_sheet(wb, ws, 'Regresi');
         }
         
-        // Simpan file
         XLSX.writeFile(wb, 'SPSS_Web_Export.xlsx');
         showToast('✅ Export berhasil!');
         document.getElementById('exportPreview').innerHTML = `<div style="background:#e8eaf6; padding:20px; border-radius:8px; text-align:center;">
             <div style="font-size:48px;">📊</div>
             <h3 style="color:#1a237e;">Export ${type}</h3>
             <p style="color:#555;">✅ File: SPSS_Web_Export.xlsx</p>
-            ${type === 'all' ? '<p style="color:#555; font-size:12px; margin-top:5px;">📑 7 sheets: Data, Deskriptif, Validitas, Reliabilitas, Korelasi, Regresi, Metadata</p>' : ''}
         </div>`;
     } catch(e) {
         showToast('❌ Gagal export: ' + e.message, true);
@@ -1520,19 +1653,54 @@ function exportToExcel(type) {
 // SAMPLE DATA
 // ============================================================
 function loadSampleValid() {
-    const data = [[5,5,4,5,5],[4,4,5,4,4],[5,5,5,5,4],[4,4,4,4,5],[5,5,5,5,5],[4,5,4,4,4],[5,4,5,5,5],[4,4,4,4,4],[5,5,5,5,5],[4,5,4,5,4]];
+    const data = [
+        [5,5,4,5,5],
+        [4,4,5,4,4],
+        [5,5,5,5,4],
+        [4,4,4,4,5],
+        [5,5,5,5,5],
+        [4,5,4,4,4],
+        [5,4,5,5,5],
+        [4,4,4,4,4],
+        [5,5,5,5,5],
+        [4,5,4,5,4]
+    ];
     document.getElementById('dataText').value = data.map(r => r.join(' ')).join('\n');
     document.getElementById('varNames').value = 'Item1, Item2, Item3, Item4, Item5';
     processData();
 }
+
 function loadSamplePartial() {
-    const data = [[5,3,4,5,2],[4,5,5,4,3],[5,2,5,5,5],[4,4,2,4,4],[5,3,5,3,5],[3,5,4,5,2],[5,2,5,4,5],[4,4,3,5,3],[2,5,4,4,5],[5,3,5,5,4]];
+    const data = [
+        [5,3,4,5,2],
+        [4,5,5,4,3],
+        [5,2,5,5,5],
+        [4,4,2,4,4],
+        [5,3,5,3,5],
+        [3,5,4,5,2],
+        [5,2,5,4,5],
+        [4,4,3,5,3],
+        [2,5,4,4,5],
+        [5,3,5,5,4]
+    ];
     document.getElementById('dataText').value = data.map(r => r.join(' ')).join('\n');
     document.getElementById('varNames').value = 'Item1, Item2, Item3, Item4, Item5';
     processData();
 }
+
 function loadSampleInvalid() {
-    const data = [[5,1,5,1,5],[1,5,1,5,1],[5,1,5,1,5],[1,5,1,5,1],[5,1,5,1,5],[1,5,1,5,1],[5,1,5,1,5],[1,5,1,5,1],[5,1,5,1,5],[1,5,1,5,1]];
+    const data = [
+        [5,1,5,1,5],
+        [1,5,1,5,1],
+        [5,1,5,1,5],
+        [1,5,1,5,1],
+        [5,1,5,1,5],
+        [1,5,1,5,1],
+        [5,1,5,1,5],
+        [1,5,1,5,1],
+        [5,1,5,1,5],
+        [1,5,1,5,1]
+    ];
     document.getElementById('dataText').value = data.map(r => r.join(' ')).join('\n');
     document.getElementById('varNames').value = 'Item1, Item2, Item3, Item4, Item5';
     processData();
